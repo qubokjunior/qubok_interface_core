@@ -3,6 +3,7 @@
 Status: working documentation folder
 Created: 2026-06-06
 Repository: qubok_interface_core
+Last update: 2026-06-07 — value/rules/references/instance atlas update
 
 ## Cel folderu
 
@@ -33,6 +34,10 @@ Każdy element interfejsu powinien być opisywany jako obiekt danych, który mo�
 - hierarchię,
 - walidację,
 - parametry eksportu,
+- `parameter_data`,
+- `reference_data`,
+- `rule_assignments`,
+- `instance_generator_data`,
 - potencjalne powiązania z eventami i command layer.
 
 ## Roboczy pipeline pojęciowy
@@ -44,8 +49,10 @@ primitive
 -> region/layout
 -> group/panel
 -> exposed parameters
+-> parameter links / object references / rules
 -> library asset
 -> reusable UI component
+-> generated helpers / instance-on-points overlays
 -> event/action/state behavior
 -> application workspace
 ```
@@ -58,7 +65,7 @@ Docelowo dokumentacja w tym folderze powinna konsekwentnie trzymać zasadę:
 Project JSON / data model = source of truth
 ```
 
-Canvas, inspector, hierarchy, export, component library, debug, event registry i state graph powinny być widokami albo warstwami operacyjnymi modelu, a nie osobnymi źródłami sprzecznego stanu.
+Canvas, inspector, hierarchy, export, component library, debug, event registry, rule engine, reference map, preview modes i state graph powinny być widokami albo warstwami operacyjnymi modelu, a nie osobnymi źródłami sprzecznego stanu.
 
 ## Zakres roboczych dokumentów
 
@@ -76,6 +83,7 @@ Proponowany podział kolejnych plików w tym folderze:
 | `07_default_mvp_interface.md` | domyślny wygląd MVP, układ interface, panel monitor sample |
 | `08_implementation_guardrails.md` | testy, kryteria akceptacji, czego nie mieszać za wcześnie |
 | `09_notes_and_decisions_log.md` | bieżący log decyzji, zmian, pytań i nowych wniosków |
+| `10_atlas_value_rules_references_instances.md` | aktualizacja po atlasach 01/08–08/08: parameter links, object references, rules, panel size policies, instance-on-points, preview modes |
 
 ## Wstępne fazy roadmapy
 
@@ -87,15 +95,31 @@ Proponowany podział kolejnych plików w tym folderze:
 | D. Canvas + viewport | renderować model bez osobnego stanu UI | SVG/HTML canvas, grid, pan, zoom |
 | E. Primitive + selection | stworzyć alfabet UI i edycję obiektów | rectangle, text, line, region, select, box select, transform |
 | F. Inspector + hierarchy | zsynchronizować widoki modelu | active object inspector, hierarchy tree, status bar |
-| G. BBox + regions | oddzielić widoczność, layout i interakcję | visual_bbox, layout_bbox, interaction_region, debug overlays |
+| G. BBox + regions + preview modes | oddzielić widoczność, layout, interakcję i overlaye | visual_bbox, layout_bbox, interaction_region, default/debug/rules/state/link overlays |
 | H. Component proof | udowodnić składanie komponentów z primitive | button_group, Panel_Monitor, save/load/export |
 | I. Default MVP cleanup | usunąć chaos debugowy z default UI | clean interface creator, debug hidden by default |
 | J. Component library | zapisywać i instancjonować komponenty | component asset, preview, metadata, new IDs |
-| K. Layout / panel builder | przyspieszyć składanie paneli | snap, align, distribute, box arranger, panel builder |
+| K. Layout / panel builder / size policies | przyspieszyć składanie paneli i reguły rozmiaru | snap, align, distribute, box arranger, panel builder, min/max policies |
 | L. App shell docking | split/merge paneli aplikacji | docking tree, splitter drag, workspace layout |
-| M. Events/actions | przygotować logikę bez dominacji graph UI | event registry, action registry, target resolver |
+| M. Events/actions/references/rules headless | przygotować logikę i zależności bez dominacji graph UI | event registry, action registry, target resolver, parameter links, rule sets, reference maps |
 | N. State graph workspace | osobny edytor logiki | graph viewport, nodes, commands output, debug watch |
-| O. Advanced systems | późniejsze eksperymenty | procedural icons, path editor, external bridges |
+| O. Advanced systems / instance-on-points | późniejsze composable subsystemy | procedural icons, path editor, instance-on-points handles, generated helpers, external bridges |
+
+## Aktualizacja 2026-06-07 — wnioski po atlasach 01/08–08/08
+
+Nowa seria grafik doprecyzowała, że projekt powinien traktować parametry, referencje, reguły i generowane instancje jako pełnoprawne warstwy modelu, nie jako dekoracyjne overlaye.
+
+Najważniejsze dodatki:
+
+1. `ParameterLink` — jawne połączenie parametru źródłowego z parametrami docelowymi, z trybem propagacji, wyrażeniem, blokadą ręcznej edycji celu i ochroną przed cyklami.
+2. `ObjectReference` — przypisywanie obiektów jako źródeł geometrii, osi, bboxów, punktów min/max, centrum, handle object lub target property.
+3. `RuleSet` — reguły rozmiaru, semantyki, estetyki, interakcji i zachowania z warunkami, priorytetem, zakresem, dziedziczeniem i walidacją konfliktów.
+4. `Panel × group size policy` — jawne tryby: respect child min/max, ignore child min/max + align, force panel size + child adaptation.
+5. `InstanceOnPoints` — subsystem do generowania uchwytów, helperów, markerów i overlayów na punktach / segmentach / bboxach / krzywych.
+6. `Orientation modes` — facing center, outward, tangent, normal, fixed world, mirrored auto, context-aware, per-point override.
+7. `PreviewMode` — Default, Debug, Rules, State Machine, Link Elements & References jako osobne tryby z filtrami overlay.
+
+Te funkcje powinny być implementowane zgodnie z maturity levels: najpierw typy, model i walidacja; potem debug/workbench; dopiero później polished user workflow.
 
 ## Reguły dokumentacji
 
@@ -109,18 +133,19 @@ Proponowany podział kolejnych plików w tym folderze:
 5. Panel nie powinien być opisywany jako pojedynczy rectangle, tylko jako struktura: frame, header, content, regions, sections, controls.
 6. Region powinien być oddzielony od shape: rectangle renderuje, region reaguje.
 7. Debug powinien być core feature, ale nie powinien dominować defaultowego interfejsu.
+8. Preview mode zmienia widoczność danych diagnostycznych i referencyjnych; nie zmienia danych projektowych.
+9. Linki, referencje, rules i instance-on-points muszą przechodzić przez source-of-truth model, command layer i validation.
 
-## Najbliższy sensowny następny dokument
+## Najbliższe sensowne dokumenty do dodania
 
-Najbliższy dokument do dodania:
+1. `01_project_scope_and_core_principles.md`
+2. `02_canonical_roadmap_from_zero.md`
+3. `03_functionality_catalog.md`
+4. `04_data_model_and_command_layer.md`
+5. `05_regions_bbox_events.md`
+6. `06_tools_workspaces_panels.md`
+7. `07_default_mvp_interface.md`
+8. `08_implementation_guardrails.md`
+9. `09_notes_and_decisions_log.md`
 
-`01_project_scope_and_core_principles.md`
-
-Powinien zawierać:
-- czym jest `qubok_interface_core`,
-- czym nie jest,
-- zakres MVP,
-- zakres post-MVP,
-- główne pojęcia,
-- pierwsze guardrails architektoniczne,
-- canonical proof: rectangle + text + region -> button_group -> component -> export.
+Nowe dokumenty powinny importować decyzje z `10_atlas_value_rules_references_instances.md`, szczególnie w rozdziałach o `parameter_data`, `reference_data`, `rule_assignments`, `layout_data`, `preview_data` i `instance_generator_data`.
