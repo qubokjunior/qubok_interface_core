@@ -3,27 +3,28 @@
 Status: working documentation folder
 Created: 2026-06-06
 Repository: qubok_interface_core
-Last update: 2026-06-07 — value/rules/references/instance atlas update
+Last update: 2026-06-11 — source of truth, node_graph canon, roadmap mapping, maturity matrix, Codex protocol
 
 ## Cel folderu
 
 `interface_core_documentation_00` jest roboczym katalogiem dokumentacji dla projektu `qubok_interface_core`.
 
 Folder służy do gromadzenia:
-- notatek projektowych,
-- opisów funkcjonalności,
+
 - decyzji architektonicznych,
-- wersji roboczych dokumentacji,
-- map roadmapy,
-- przypisań funkcji do etapów implementacji,
-- definicji pojęć używanych w projekcie,
+- definicji pojęć,
+- roadmapy i faz implementacji,
+- opisów funkcjonalności,
+- standardów wizualizacji UI,
+- protokołów developmentowych,
 - materiałów referencyjnych do późniejszej dokumentacji docelowej.
 
 ## Główne założenie projektu
 
 `qubok_interface_core` ma być parametrycznym silnikiem interfejsu, a nie zwykłym zestawem gotowych kontrolek UI.
 
-Każdy element interfejsu powinien być opisywany jako obiekt danych, który może mieć między innymi:
+Każdy istotny element interfejsu powinien być opisywany jako obiekt danych, który może mieć między innymi:
+
 - identyfikator,
 - typ,
 - transformację,
@@ -37,8 +38,21 @@ Każdy element interfejsu powinien być opisywany jako obiekt danych, który mo�
 - `parameter_data`,
 - `reference_data`,
 - `rule_assignments`,
+- `relation_data`,
 - `instance_generator_data`,
-- potencjalne powiązania z eventami i command layer.
+- powiązania z eventami, command layer i `node_graph`.
+
+## Canonical entrypoint
+
+Czytaj w tej kolejności:
+
+| Plik | Cel |
+|---|---|
+| `00_CURRENT_SOURCE_OF_TRUTH.md` | aktualny kanon projektu, scope i precedence dokumentów |
+| `01_TERMINOLOGY_CANON_NODE_GRAPH.md` | finalna decyzja: `node_graph` zastępuje stare `state_graph` |
+| `02_ROADMAP_PHASE_TO_SCREEN_STATE_MAP.md` | rozdzielenie Phase A-O i Screen State 01-08 |
+| `03_FEATURE_MATURITY_MATRIX.md` | poziomy L0-L5 i gate dla funkcji |
+| `04_CODEX_DEVELOPMENT_PROTOCOL.md` | protokół promptów/sprintów dla Codex i nowych czatów |
 
 ## Roboczy pipeline pojęciowy
 
@@ -53,39 +67,32 @@ primitive
 -> library asset
 -> reusable UI component
 -> generated helpers / instance-on-points overlays
--> event/action/state behavior
+-> event/action/node_graph behavior
 -> application workspace
 ```
 
 ## Zasada źródła prawdy
 
-Docelowo dokumentacja w tym folderze powinna konsekwentnie trzymać zasadę:
-
 ```text
 Project JSON / data model = source of truth
 ```
 
-Canvas, inspector, hierarchy, export, component library, debug, event registry, rule engine, reference map, preview modes i state graph powinny być widokami albo warstwami operacyjnymi modelu, a nie osobnymi źródłami sprzecznego stanu.
+Canvas, inspector, hierarchy, export, component library, debug, event registry, rule engine, reference map, preview modes i `node_graph` są widokami albo warstwami operacyjnymi modelu, a nie osobnymi źródłami sprzecznego stanu.
 
-## Zakres roboczych dokumentów
+## Decyzja nazewnicza 2026-06-11
 
-Proponowany podział kolejnych plików w tym folderze:
+`node_graph` jest ostateczną nazwą systemu graph.
 
-| Plik | Cel |
+| Stare | Nowe |
 |---|---|
-| `00_INDEX.md` | indeks, cel folderu, aktualny zakres dokumentacji |
-| `01_project_scope_and_core_principles.md` | definicja projektu, granice MVP, zasady rdzenia |
-| `02_canonical_roadmap_from_zero.md` | roadmapa od zera, fazy implementacji, zależności |
-| `03_functionality_catalog.md` | katalog funkcji, ich cel, dane wejściowe, wynik i miejsce w systemie |
-| `04_data_model_and_command_layer.md` | model danych, commands, walidacja, source of truth |
-| `05_regions_bbox_events.md` | visual/layout/interaction bbox, regiony, event flow |
-| `06_tools_workspaces_panels.md` | narzędzia, workspaces, panele i ich role |
-| `07_default_mvp_interface.md` | domyślny wygląd MVP, układ interface, panel monitor sample |
-| `08_implementation_guardrails.md` | testy, kryteria akceptacji, czego nie mieszać za wcześnie |
-| `09_notes_and_decisions_log.md` | bieżący log decyzji, zmian, pytań i nowych wniosków |
-| `10_atlas_value_rules_references_instances.md` | aktualizacja po atlasach 01/08–08/08: parameter links, object references, rules, panel size policies, instance-on-points, preview modes |
+| `state_graph` | `node_graph` |
+| `state graph` | `node_graph` |
+| `StateGraphWorkspace` dla nowych plików | `NodeGraphWorkspace` |
+| `stateGraphTypes` dla nowych plików | `nodeGraphTypes` |
 
-## Wstępne fazy roadmapy
+`state` pozostaje poprawnym pojęciem dla stanów obiektu/komponentu, na przykład: hover, pressed, disabled, selected, dirty, error, `states_slot`, `state_transition`.
+
+## Fazy roadmapy implementacyjnej
 
 | Faza | Cel | Przykładowe funkcje |
 |---|---|---|
@@ -95,57 +102,62 @@ Proponowany podział kolejnych plików w tym folderze:
 | D. Canvas + viewport | renderować model bez osobnego stanu UI | SVG/HTML canvas, grid, pan, zoom |
 | E. Primitive + selection | stworzyć alfabet UI i edycję obiektów | rectangle, text, line, region, select, box select, transform |
 | F. Inspector + hierarchy | zsynchronizować widoki modelu | active object inspector, hierarchy tree, status bar |
-| G. BBox + regions + preview modes | oddzielić widoczność, layout, interakcję i overlaye | visual_bbox, layout_bbox, interaction_region, default/debug/rules/state/link overlays |
+| G. BBox + regions + preview modes | oddzielić widoczność, layout, interakcję i overlaye | visual_bbox, layout_bbox, interaction_region, debug/rules/references overlays |
 | H. Component proof | udowodnić składanie komponentów z primitive | button_group, Panel_Monitor, save/load/export |
 | I. Default MVP cleanup | usunąć chaos debugowy z default UI | clean interface creator, debug hidden by default |
 | J. Component library | zapisywać i instancjonować komponenty | component asset, preview, metadata, new IDs |
-| K. Layout / panel builder / size policies | przyspieszyć składanie paneli i reguły rozmiaru | snap, align, distribute, box arranger, panel builder, min/max policies |
+| K. Layout / panel builder / size policies | przyspieszyć składanie paneli i reguły rozmiaru | snap, align, box arranger, panel builder |
 | L. App shell docking | split/merge paneli aplikacji | docking tree, splitter drag, workspace layout |
-| M. Events/actions/references/rules headless | przygotować logikę i zależności bez dominacji graph UI | event registry, action registry, target resolver, parameter links, rule sets, reference maps |
-| N. State graph workspace | osobny edytor logiki | graph viewport, nodes, commands output, debug watch |
-| O. Advanced systems / instance-on-points | późniejsze composable subsystemy | procedural icons, path editor, instance-on-points handles, generated helpers, external bridges |
+| M. Events/actions/references/rules headless | przygotować logikę i zależności bez dominacji graph UI | event registry, action registry, target resolver, links, rules |
+| N. Node graph workspace | osobny edytor graph | node_graph viewport, profiles, ports, output contracts, debug watch |
+| O. Advanced systems / instance-on-points | późniejsze composable subsystemy | procedural icons, path editor, instance-on-points, external bridges |
 
-## Aktualizacja 2026-06-07 — wnioski po atlasach 01/08–08/08
+## Screen State 01-08
 
-Nowa seria grafik doprecyzowała, że projekt powinien traktować parametry, referencje, reguły i generowane instancje jako pełnoprawne warstwy modelu, nie jako dekoracyjne overlaye.
+Screen State 01-08 to wizualne stany dokumentacyjne fullscreen interface. Nie są ścisłym sprint planem kodu.
 
-Najważniejsze dodatki:
-
-1. `ParameterLink` — jawne połączenie parametru źródłowego z parametrami docelowymi, z trybem propagacji, wyrażeniem, blokadą ręcznej edycji celu i ochroną przed cyklami.
-2. `ObjectReference` — przypisywanie obiektów jako źródeł geometrii, osi, bboxów, punktów min/max, centrum, handle object lub target property.
-3. `RuleSet` — reguły rozmiaru, semantyki, estetyki, interakcji i zachowania z warunkami, priorytetem, zakresem, dziedziczeniem i walidacją konfliktów.
-4. `Panel × group size policy` — jawne tryby: respect child min/max, ignore child min/max + align, force panel size + child adaptation.
-5. `InstanceOnPoints` — subsystem do generowania uchwytów, helperów, markerów i overlayów na punktach / segmentach / bboxach / krzywych.
-6. `Orientation modes` — facing center, outward, tangent, normal, fixed world, mirrored auto, context-aware, per-point override.
-7. `PreviewMode` — Default, Debug, Rules, State Machine, Link Elements & References jako osobne tryby z filtrami overlay.
-
-Te funkcje powinny być implementowane zgodnie z maturity levels: najpierw typy, model i walidacja; potem debug/workbench; dopiero później polished user workflow.
+| Screen State | Sens |
+|---|---|
+| 01 | Foundation / model / primitive |
+| 02 | Canvas / primitive / inspector sync |
+| 03 | Regions / bbox / interaction debug |
+| 04 | Spreadsheet / filters / parameter visibility |
+| 05 | Layers / hierarchy / tags / style sorting |
+| 06 | Panel builder / component structure / states |
+| 07 | Actions / events / command layer / node_graph |
+| 08 | Docking / pinning / export / final MVP view |
 
 ## Reguły dokumentacji
 
 1. Każda funkcjonalność powinna mieć przypisany etap roadmapy.
-2. Każda funkcjonalność powinna mieć poziom dojrzałości: spec, headless core, debug view, MVP workflow, polished tool albo advanced/composable.
-3. Dokumentacja powinna rozdzielać:
-   - app shell docking,
-   - canvas object layout,
-   - graph viewport layout.
-4. State graph nie powinien być opisywany jako pierwszy ekran MVP.
-5. Panel nie powinien być opisywany jako pojedynczy rectangle, tylko jako struktura: frame, header, content, regions, sections, controls.
-6. Region powinien być oddzielony od shape: rectangle renderuje, region reaguje.
-7. Debug powinien być core feature, ale nie powinien dominować defaultowego interfejsu.
+2. Każda funkcjonalność powinna mieć poziom dojrzałości: L0-L5.
+3. Dokumentacja powinna rozdzielać app shell docking, canvas object layout i graph viewport layout.
+4. `node_graph` nie powinien być defaultowym ekranem MVP.
+5. Panel nie jest pojedynczym rectangle, tylko strukturą: frame, header, content, regions, sections, controls.
+6. Region jest oddzielony od shape: rectangle renderuje, region reaguje.
+7. Debug jest core feature, ale nie dominuje defaultowego interfejsu.
 8. Preview mode zmienia widoczność danych diagnostycznych i referencyjnych; nie zmienia danych projektowych.
-9. Linki, referencje, rules i instance-on-points muszą przechodzić przez source-of-truth model, command layer i validation.
+9. Linki, referencje, rules, states i instance-on-points muszą przechodzić przez source-of-truth model, command layer i validation.
+10. Nowe dokumenty i prompty nie powinny wprowadzać nowego użycia `state_graph`.
 
-## Najbliższe sensowne dokumenty do dodania
+## Dokumenty referencyjne
 
-1. `01_project_scope_and_core_principles.md`
-2. `02_canonical_roadmap_from_zero.md`
-3. `03_functionality_catalog.md`
-4. `04_data_model_and_command_layer.md`
-5. `05_regions_bbox_events.md`
-6. `06_tools_workspaces_panels.md`
-7. `07_default_mvp_interface.md`
-8. `08_implementation_guardrails.md`
-9. `09_notes_and_decisions_log.md`
+| Plik | Cel |
+|---|---|
+| `10_atlas_value_rules_references_instances.md` | parameter links, object references, rules, size policies, instance-on-points, preview modes |
+| `11_VISUAL_DIAGNOSTICS_AND_STYLE_STANDARD_2026_06_10.txt` | standard realnego screenshotu narzędzia zamiast infografiki |
+| `12_RULES_STATES_RELATIONS_PROCEDURAL_UI_2026_06_10.txt` | rules, states, responsiveness, value relations, relation graph, shape graph, array |
+| `13_REGISTRY_CUSTOMIZATION_TOKENS_PREVIEW_2026_06_10.txt` | registries, customization, tokens, Preview Service, Node Adapter Registry |
+| `14_DEBUG_DOCKING_WORKSPACE_KERNEL_GRAPH_PROFILES_2026_06_10.txt` | debug_command, docking ownership, Workspace Kernel, node_graph profiles |
 
-Nowe dokumenty powinny importować decyzje z `10_atlas_value_rules_references_instances.md`, szczególnie w rozdziałach o `parameter_data`, `reference_data`, `rule_assignments`, `layout_data`, `preview_data` i `instance_generator_data`.
+## Precedence
+
+Gdy dokumenty są sprzeczne, obowiązuje kolejność:
+
+1. `00_CURRENT_SOURCE_OF_TRUTH.md`
+2. `01_TERMINOLOGY_CANON_NODE_GRAPH.md`
+3. `02_ROADMAP_PHASE_TO_SCREEN_STATE_MAP.md`
+4. `03_FEATURE_MATURITY_MATRIX.md`
+5. `04_CODEX_DEVELOPMENT_PROTOCOL.md`
+6. pliki tematyczne `10-14`
+7. starsze dated notes i prompty graficzne
