@@ -1,13 +1,20 @@
 # 28 — Codex patch policy
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: codex_patch_policy
 last_updated: 2026-06-10
 
 ## Cel
 
 Ten dokument określa, jak Codex powinien zmieniać pliki w repozytorium, aby development był przewidywalny, mały i łatwy do review.
+
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
 
 ## Główna zasada
 
@@ -56,16 +63,19 @@ Do:
 - keep Project JSON exportable,
 - keep React out of `src/core`,
 - keep external libraries behind adapters,
-- keep debug hidden unless current sprint is debug-specific.
+- keep debug hidden unless current sprint is debug-specific,
+- keep node_graph naming consistent.
 
 Do not:
 
 - reformat entire unrelated files,
 - rename broad concepts without updating glossary/docs,
+- introduce old `state_graph` naming,
+- use temporary project names ending with `_00`,
 - remove validation to silence errors,
 - use broad `any` to bypass model errors,
 - add new dependencies without adapter policy check,
-- implement visual graph before event/action registry,
+- implement visual node graph before event/action registry,
 - implement docking by mutating InterfaceObject transforms,
 - commit local UI state as source of truth.
 
@@ -78,8 +88,8 @@ Do not:
 | `src/core/selectors/**` | reads | no mutation, reusable by UI/workspaces |
 | `src/core/validation/**` | consistency | detect, do not hide broken links |
 | `src/core/render/**` | render adapter | no React dependency if possible |
-| `src/core/events/**` | headless events/actions | no visual graph dependency |
-| `src/core/stateGraph/**` | graph model/runtime | consumes events/actions, outputs commands |
+| `src/core/events/**` | headless events/actions | no visual node graph dependency |
+| `src/core/nodeGraph/**` | node graph model/runtime | consumes events/actions, outputs commands |
 | `src/core/docking/**` | app shell layout model | not canvas object layout |
 | `src/creator/**` | React UI/workspaces | dispatch commands, read selectors |
 | `tests/**` | regression safety | cover current sprint behavior |
@@ -135,7 +145,7 @@ Before adding any dependency:
 
 ## Documentation update policy
 
-If a patch changes architecture, roadmap order, data owner, command flow, or file navigation, update the relevant docs:
+If a patch changes architecture, roadmap order, data owner, command flow, naming, local path assumptions or file navigation, update the relevant docs:
 
 - `00_CURRENT_SOURCE_OF_TRUTH.md`
 - `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
@@ -143,5 +153,6 @@ If a patch changes architecture, roadmap order, data owner, command flow, or fil
 - `22_FEATURE_DEPENDENCY_MATRIX.md`
 - `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md`
 - `24_CANONICAL_GLOSSARY.md`
+- `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md`
 
 Do not update all docs by default. Update only affected docs.
