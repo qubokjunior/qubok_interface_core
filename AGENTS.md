@@ -21,6 +21,15 @@ If the user does not specify another task, use Route E:
 
 Read only the files listed for Route E in the navigation map.
 
+## Required operational docs
+
+For most implementation routes, also respect:
+
+- `26_CODEX_REPAIR_PLAYBOOK.md` when build/test/typecheck fails.
+- `27_PROJECT_COMMANDS_AND_TESTS.md` before guessing build/test commands.
+- `28_CODEX_PATCH_POLICY.md` before editing files.
+- `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` before claiming a roadmap stage is complete.
+
 ## Core invariants
 
 1. Project JSON / Project model is source of truth.
@@ -45,8 +54,10 @@ Read only the files listed for Route E in the navigation map.
 - Do not expand scope.
 - Do not start with full state graph UI, docking shell, Tauri, procedural icons, bitmap/GPU graph or linked component instances unless the selected route explicitly allows it.
 - Prefer small safe patches.
+- Use `27_PROJECT_COMMANDS_AND_TESTS.md` to discover package location and commands before running build/test.
 - Run build/tests when available.
-- If build fails, repair the current sprint only.
+- If build fails, use `26_CODEX_REPAIR_PLAYBOOK.md` and repair the current sprint only.
+- Use `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` before reporting a roadmap stage as done.
 
 ## Required response format
 
