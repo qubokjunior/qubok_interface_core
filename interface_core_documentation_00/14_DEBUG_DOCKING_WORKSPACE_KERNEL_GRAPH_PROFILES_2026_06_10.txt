@@ -1,9 +1,9 @@
 QUBOK_INTERFACE_CORE — DEBUG, DOCKING, WORKSPACE KERNEL, GRAPH PROFILES
 Wersja: 2026-06-10B
-Status: dopisanie wniosków z rozmów o debug_command, spreadsheet filtrach, docking ownership, workspace kernel, curve functions, event weights i profilach state_graph.
+Status: dopisanie wniosków z rozmów o debug_command, spreadsheet filtrach, docking ownership, workspace kernel, curve functions, event weights i profilach node_graph.
 
 1. CEL
-Dokument porządkuje mechaniki runtime/debug i organizację dużych funkcjonalności interface_core. Dotyczy tego, jak nie zamienić state_graph, debug console i docking systemu w chaotyczne worki funkcji.
+Dokument porządkuje mechaniki runtime/debug i organizację dużych funkcjonalności interface_core. Dotyczy tego, jak nie zamienić node_graph, debug console i docking systemu w chaotyczne worki funkcji.
 
 2. DEBUG_COMMAND / COMMAND CONSOLE
 Debug_command nie powinien być jednym strumieniem wszystkiego. Powinien być kontekstową konsolą command/event/debug, która domyślnie pokazuje akcje powiązane z aktywną selekcją, hover, workspace i mode.
@@ -11,7 +11,7 @@ Debug_command nie powinien być jednym strumieniem wszystkiego. Powinien być ko
 Minimalny wpis logu:
 - time;
 - severity: info / debug / warn / error / fatal;
-- source: canvas / inspector / state_graph / docking / rules / preview / validation;
+- source: canvas / inspector / node_graph / docking / rules / preview / validation;
 - type: user_action / command / validation / runtime / graph / save / event;
 - command_id;
 - target_id;
@@ -24,7 +24,7 @@ Minimalny wpis logu:
 3. FILTRY DEBUG_COMMAND
 Filtry wymagane w MVP debug:
 - severity: errors only, warnings+, all;
-- workspace: canvas, state_graph, panel_builder, color_tools, docking;
+- workspace: canvas, node_graph, panel_builder, color_tools, docking;
 - selection_related;
 - cursor_related / hover_related;
 - tool_mode: select, primitive_edit, customize_interface, graph_edit, array, color_tools;
@@ -174,7 +174,7 @@ WorkspaceKernel:
 
 Workspace adapters:
 - Canvas Editor;
-- State Graph;
+- Node Graph;
 - Procedural Shape Creator;
 - Color Tools;
 - Array;
@@ -185,7 +185,7 @@ Workspace adapters:
 Workspace | Snap candidates
 ---|---
 Canvas Editor | bbox edge, center, parent padding, sibling edge
-State Graph | node port, reroute point, graph lane, grid
+Node Graph | node port, reroute point, graph lane, grid
 Procedural Shape Creator | control point, tangent, curve sample, curve normal
 Panel Builder | row boundary, section boundary, region inset, padding guide
 Array | instance bounds, spacing step, index anchor
@@ -246,8 +246,8 @@ Różnica:
 Przykład hit_score:
 hit_score = z_index * 1000 + interaction_weight * 100 + rule_priority - distance_to_cursor.
 
-15. STATE_GRAPH PROFILE SYSTEM
-Jeden graph editor nie powinien oznaczać jednego worka funkcji. Potrzebne są profile.
+15. NODE_GRAPH PROFILE SYSTEM
+Jeden graph editor nie powinien oznaczać jednego worka funkcji. Potrzebne są profile `node_graph`.
 
 Profile | Cel | Typowe outputy
 ---|---|---
@@ -309,4 +309,4 @@ Dla relation graph:
 - OUTPUT.
 
 19. WNIOSEK
-Wszystko może istnieć w registry, ale nie wszystko powinno być zawsze widoczne. Każdy workspace filtruje funkcje według graph profile, active mode, selection, cursor context, permissions i debug verbosity. Dzięki temu state_graph pozostaje systemem, nie atrapą i nie chaotycznym workiem nodów.
+Wszystko może istnieć w registry, ale nie wszystko powinno być zawsze widoczne. Każdy workspace filtruje funkcje według graph profile, active mode, selection, cursor context, permissions i debug verbosity. Dzięki temu node_graph pozostaje systemem, nie atrapą i nie chaotycznym workiem nodów.
