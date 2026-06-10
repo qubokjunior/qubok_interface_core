@@ -1,8 +1,20 @@
 # 17 — External adapter policy and library decisions
 
+status: active
+version: v2.2
+doc_type: external_adapter_policy
+last_updated: 2026-06-10
+
 ## Cel
 
 Ten dokument określa, jak korzystać z bibliotek zewnętrznych bez oddawania im kontroli nad modelem projektu.
+
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Nie dodawać nowych referencji do starego nazewnictwa `state_graph`.
 
 ## Główna zasada
 
@@ -28,30 +40,30 @@ Niepoprawny przepływ:
 
 | Obszar | Narzędzie | Status | Rola |
 |---|---|---|---|
-| Graph viewport | React Flow | later allowed | view adapter for `Project.state_graphs` |
+| Node graph viewport | React Flow | later allowed | view adapter for `Project.node_graphs` |
 | Docking shell | FlexLayout | later review | adapter for `DockLayout` if full docking is needed |
 | Split panels | react-resizable-panels | later review | simple resize/split adapter |
 | Immutable updates | Immer | allowed if useful | helper inside command reducer |
 | State machine runtime | XState | experimental later | optional execution backend |
 | Desktop shell | Tauri | post-MVP | file/desktop adapter |
 
-## Graph adapter rules
+## Node graph adapter rules
 
-React Flow or any graph UI tool can be considered only in the State Graph Workspace phase.
+React Flow or any graph UI tool can be considered only in the Node Graph Workspace phase.
 
 Allowed:
 - node and edge rendering,
-- graph pan and zoom,
+- node graph pan and zoom,
 - selection UI,
 - edge creation UI,
 - custom node components.
 
 Required:
-- Project stores the graph model.
-- Adapter maps Project graph to UI nodes and edges.
-- UI changes become graph commands.
-- Graph validation works without the UI library.
-- Default MVP screen does not become graph editor.
+- Project stores the node graph model.
+- Adapter maps Project node graph to UI nodes and edges.
+- UI changes become node graph commands.
+- Node graph validation works without the UI library.
+- Default MVP screen does not become node graph editor.
 
 ## Docking adapter rules
 
@@ -84,7 +96,7 @@ Required:
 
 ## XState rules
 
-XState is not needed for early MVP. It may be tested later as execution backend for selected state graph behavior.
+XState is not needed for early MVP. It may be tested later as execution backend for selected node graph behavior.
 
 Required:
 - it must not replace Project model,
@@ -103,12 +115,12 @@ Required:
 ## Checklist before adding any library
 
 1. What problem does it solve?
-2. Which layer owns that problem: core, creator, docking, graph, export or desktop shell?
+2. Which layer owns that problem: core, creator, docking, node graph, export or desktop shell?
 3. Where does the data live after reload?
 4. Does every persistent change pass through command layer?
 5. Can validation run without the library?
 6. Can the feature be hidden if it is not L3/L4?
-7. Does it keep app shell layout, canvas object layout and graph viewport layout separate?
+7. Does it keep app shell layout, canvas object layout and node graph viewport layout separate?
 
 ## Current recommendation
 
