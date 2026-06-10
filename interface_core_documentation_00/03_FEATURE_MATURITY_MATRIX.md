@@ -5,7 +5,7 @@ Status: canonical maturity gate
 
 ## Purpose
 
-Every feature must have a maturity level before it is implemented, exposed in UI, used in prompts or shown as default workflow.
+Every feature must declare maturity before implementation, UI exposure, prompt usage or default workflow placement.
 
 ## Levels
 
@@ -13,14 +13,12 @@ Every feature must have a maturity level before it is implemented, exposed in UI
 |---|---|---|---|
 | L0 | SPEC_ONLY | documented idea, no implementation | hidden |
 | L1 | HEADLESS_CORE | model/types/functions, no polished UI | hidden or dev-only |
-| L2 | DEBUG_VIEW | diagnostic or workbench view | collapsed/debug/workspace only |
+| L2 | DEBUG_VIEW | diagnostic/workbench view | collapsed/debug/workspace only |
 | L3 | USER_WORKFLOW_MVP | usable in main workflow | visible when relevant |
 | L4 | POLISHED_TOOL | stable UI, shortcuts, validation, docs | visible / production-ready |
 | L5 | ADVANCED_COMPOSABLE | reusable as component, preset, graph profile or subsystem | workspace/palette/advanced |
 
-## Default UI rule
-
-Default interface creator can show L3/L4 features and compact L2 status chips. It should not be dominated by raw registries, workbenches, full node_graph before Phase N or advanced systems.
+Default interface creator should show L3/L4 and compact L2 status only. It should not be dominated by raw registries, workbenches, full `node_graph` before Phase N or advanced systems.
 
 ## Matrix
 
@@ -75,11 +73,11 @@ Default interface creator can show L3/L4 features and compact L2 status chips. I
 
 | Promotion | Gate |
 |---|---|
-| L0 to L1 | model slot named, owner known, persistence impact known, validation risks listed |
-| L1 to L2 | types/functions exist, core remains headless, validation path exists or is stubbed |
-| L2 to L3 | user workflow clear, command layer used, sync preserved, default UI readable |
-| L3 to L4 | compact stable UI, visible warnings, coherent shortcuts/status, save/export behavior defined |
-| L4 to L5 | reusable as component, preset, node_graph action/profile, template, adapter or subsystem |
+| L0 -> L1 | model slot named, owner known, persistence impact known, validation risks listed |
+| L1 -> L2 | types/functions exist, core remains headless, validation path exists or is stubbed |
+| L2 -> L3 | workflow clear, command layer used, sync preserved, default UI readable |
+| L3 -> L4 | stable compact UI, visible warnings, coherent shortcuts/status, save/export behavior defined |
+| L4 -> L5 | reusable as component, preset, `node_graph` action/profile, template, adapter or subsystem |
 
 ## Sprint annotation template
 
@@ -87,12 +85,12 @@ Default interface creator can show L3/L4 features and compact L2 status chips. I
 Feature:
 Phase:
 Current maturity:
-Target maturity after sprint:
+Target maturity:
 Default UI visibility:
 Touched model fields:
 Touched commands:
 Touched views:
-Validation added or changed:
+Validation:
 Manual tests:
 Out-of-scope:
 ```
