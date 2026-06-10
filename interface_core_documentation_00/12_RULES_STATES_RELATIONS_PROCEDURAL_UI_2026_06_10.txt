@@ -3,7 +3,7 @@ Wersja: 2026-06-10
 Status: nowy dokument aktualizujący zakres funkcjonalny po rozmowach i grafikach z ostatnich ok. 2 dni.
 
 1. CEL
-Ten dokument opisuje nowe i doprecyzowane mechaniki, które pojawiły się w rozmowach: rules, states, responsiveness, value relations, relation graph, shape through state_graph, instance on points oraz array. Te mechaniki przesuwają qubok_interface_core z prostego edytora paneli w stronę parametrycznego interface engine.
+Ten dokument opisuje nowe i doprecyzowane mechaniki, które pojawiły się w rozmowach: rules, states, responsiveness, value relations, relation graph, shape through node_graph, instance on points oraz array. Te mechaniki przesuwają qubok_interface_core z prostego edytora paneli w stronę parametrycznego interface engine.
 
 2. RULES ENGINE
 Rules engine odpowiada za warunkową zmianę właściwości elementów UI.
@@ -177,8 +177,8 @@ Przykładowe output targets:
 - radius;
 - layout gap.
 
-7. SHAPE THROUGH STATE_GRAPH
-Shape graph tworzy kształty UI proceduralnie. Może działać samodzielnie albo jako część state_graph, gdy stan wybiera wariant shape.
+7. SHAPE THROUGH NODE_GRAPH
+Shape graph tworzy kształty UI proceduralnie. Może działać samodzielnie albo jako profil `shape` w `node_graph`, gdy stan, kontekst albo event wybiera wariant shape.
 
 Przykładowe nody:
 - rectangle_base;
@@ -200,7 +200,7 @@ Wynik graphu:
 - preview mesh/path;
 - exportable SVG visual albo JSON runtime shape description.
 
-Konieczne doprecyzowanie: jeśli używamy nazwy state_graph, ekran powinien pokazywać state/context/event wpływający na kształt, np. active_state = compact, focused, search_open, disabled.
+Konieczne doprecyzowanie: jeśli używamy `node_graph` do tworzenia shape, ekran powinien pokazywać state/context/event wpływający na kształt, np. active_state = compact, focused, search_open, disabled.
 
 8. INSTANCE ON POINTS
 Instance on points powtarza komponenty lub primitives na źródłach punktów.
@@ -290,7 +290,7 @@ Najbardziej wartościowa kolejność rozszerzania po core UI:
 7. Array modifier.
 8. Instance on points.
 9. Relation graph.
-10. Shape through state_graph.
+10. Shape through node_graph.
 
 12. KLUCZOWY WNIOSEK
 qubok_interface_core powinien być projektowany jako parametryczny interface engine: obiekty UI nie tylko mają style i layout, ale także rules, states, drivers, responsive constraints, graph-generated shape i proceduralne multiplikatory.
