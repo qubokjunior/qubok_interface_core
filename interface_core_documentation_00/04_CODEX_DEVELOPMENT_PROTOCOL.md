@@ -5,7 +5,7 @@ Status: canonical prompt and sprint protocol
 
 ## Purpose
 
-Use this document when preparing Codex prompts or new development chat prompts. The goal is to keep each sprint narrow, testable and aligned with the current documentation canon.
+Use this file to prepare Codex prompts or new development chat prompts. Each sprint should stay narrow, testable and aligned with the documentation canon.
 
 ## Required task header
 
@@ -23,60 +23,56 @@ Out-of-scope:
 
 ## Required task sections
 
-Each implementation task should include:
-
-1. Goal.
-2. Files to inspect.
-3. Files allowed to change.
-4. Files not part of this task.
-5. Model fields affected.
-6. Commands affected.
-7. UI views affected.
-8. Validation affected.
-9. Manual tests.
-10. Acceptance criteria.
-11. Rollback risk.
+| Section | Purpose |
+|---|---|
+| Goal | one dominant mechanism |
+| Files to inspect | context before patching |
+| Files allowed to change | patch boundary |
+| Files not part of this task | scope guard |
+| Model fields affected | source-of-truth impact |
+| Commands affected | mutation path impact |
+| UI views affected | visible workflow impact |
+| Validation affected | correctness guard |
+| Manual tests | acceptance workflow |
+| Acceptance criteria | done definition |
+| Rollback risk | safety note |
 
 ## Scope rule
 
-One sprint should implement one dominant mechanism.
-
-Good examples:
+Good sprint scope:
 
 - command layer for object patching,
 - region debug overlay,
 - component save/instantiate MVP,
 - app shell split/merge only,
 - headless event registry only,
-- node_graph output contract validation only.
+- `node_graph` output contract validation only.
 
-Avoid combining graph, docking, rules, array, full visual redesign and model migration in one sprint.
+Avoid combining graph, docking, rules, array, visual redesign and model migration in one sprint.
 
 ## Naming rule
 
 Use `node_graph` in all new docs and public naming.
 
-Preferred names:
+| Prefer | Avoid for new public APIs |
+|---|---|
+| `nodeGraphTypes.ts` | `stateGraphTypes.ts` |
+| `NodeGraphWorkspace.tsx` | `StateGraphWorkspace.tsx` |
+| `node_graph_profile` | `state_graph_profile` |
+| `node_graph_output_contract` | `state_graph_output_contract` |
+| `node_adapter_registry` | `stateGraphExecution` |
 
-- `nodeGraphTypes.ts`,
-- `NodeGraphWorkspace.tsx`,
-- `node_graph_profile`,
-- `node_graph_output_contract`,
-- `node_adapter_registry`.
+Migrate legacy code only in a dedicated cleanup sprint.
 
-Do not introduce new public names based on `stateGraph`. If old code still has this name, migrate it only in a dedicated cleanup sprint.
-
-## Source of truth rule
-
-Persistent changes should follow:
+## Source-of-truth flow
 
 ```text
 UI event -> normalized intent -> command -> core update -> dirty flags -> validation -> render / preview / export update
 ```
 
-Canvas, inspector and graph should not keep conflicting persistent object state.
+Canvas, inspector and graph must not keep conflicting persistent object state.
 
-## Three layout rule
+## Layout separation
 
 | Domain | Owns |
 |---|---|
@@ -84,7 +80,7 @@ Canvas, inspector and graph should not keep conflicting persistent object state.
 | canvas_object_layout | object move, resize, align, snap and layout on canvas |
 | graph_viewport_layout | graph camera, graph nodes, ports and lanes |
 
-Do not mix these models in one implementation task.
+Do not mix these domains in one implementation task.
 
 ## Preferred final response after a sprint
 
@@ -106,7 +102,7 @@ Next:
 - one logical next task
 ```
 
-## Manual test template
+## Manual tests
 
 For UI/model work:
 
@@ -127,7 +123,7 @@ For documentation-only work:
 2. Confirm it points to current source of truth.
 3. Open 00_INDEX.md.
 4. Confirm node_graph terminology and roadmap precedence.
-5. Confirm older state_graph wording is marked as legacy or replaced in edited files.
+5. Confirm legacy state_graph wording is marked or replaced.
 ```
 
 ## Acceptance criteria
