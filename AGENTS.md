@@ -1,7 +1,7 @@
 # AGENTS.md — qubok_interface_core
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: codex_root_instruction
 last_updated: 2026-06-10
 
@@ -13,6 +13,26 @@ Before working on this repository, read this navigation file first:
 
 Then choose exactly one route from that file. Do not read every documentation file.
 
+## Naming
+
+Current project name:
+
+`qubok_interface_core`
+
+Short name:
+
+`interface_core`
+
+Local user project path:
+
+`I:\Art\_AI\app_development\qubok_interface_core`
+
+Current graph naming:
+
+- Use `node_graph`, `nodeGraph`, `NodeGraph` and `node graph`.
+- Do not add new references using the old `state_graph` naming.
+- Do not use temporary project names ending with `_00` for the current project.
+
 ## Default route
 
 If the user does not specify another task, use Route E:
@@ -22,8 +42,6 @@ If the user does not specify another task, use Route E:
 Read only the files listed for Route E in the navigation map.
 
 ## Required operational docs
-
-For most implementation routes, also respect:
 
 - `26_CODEX_REPAIR_PLAYBOOK.md` when build/test/typecheck fails.
 - `27_PROJECT_COMMANDS_AND_TESTS.md` before guessing build/test commands.
@@ -42,7 +60,7 @@ For most implementation routes, also respect:
 8. `visual_bbox`, `layout_bbox` and `interaction_region` are separate.
 9. Rectangle renders; Region interacts.
 10. Render adapter separates Project from SVG/HTML renderer.
-11. Event/action registry is headless and separate from visual state graph.
+11. Event/action registry is headless and separate from visual node graph.
 12. External libraries are adapters, not source of truth.
 13. Default UI exposes only L3/L4 features.
 14. Debug, graph, docking and experimental systems must not dominate the default screen.
@@ -52,7 +70,7 @@ For most implementation routes, also respect:
 
 - Implement only the selected route/sprint.
 - Do not expand scope.
-- Do not start with full state graph UI, docking shell, Tauri, procedural icons, bitmap/GPU graph or linked component instances unless the selected route explicitly allows it.
+- Do not start with full node graph UI, docking shell, Tauri, procedural icons, bitmap/GPU graph or linked component instances unless the selected route explicitly allows it.
 - Prefer small safe patches.
 - Use `27_PROJECT_COMMANDS_AND_TESTS.md` to discover package location and commands before running build/test.
 - Run build/tests when available.
