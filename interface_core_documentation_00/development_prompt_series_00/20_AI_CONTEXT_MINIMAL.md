@@ -9,6 +9,8 @@ last_updated: 2026-06-10
 
 To jest najkrótszy kontekst, jaki powinien wystarczyć AI/Codex do rozpoczęcia pracy nad jednym sprintem bez czytania całej historii dokumentacji.
 
+Jeżeli Codex ma sam zdecydować, które dokumenty czytać, użyj najpierw `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`. Ten plik jest krótkim kontekstem, a plik 25 jest mapą wyboru ścieżki.
+
 ## Projekt
 
 `qubok_interface_core` to parametryczny silnik UI dla przyszłych aplikacji QUBOK. Nie jest to UI kit, theme ani pojedynczy app mockup. Każdy element interface jest obiektem danych w Project modelu.
@@ -99,9 +101,10 @@ Ten sprint powinien zbudować:
 
 ```text
 Read:
-1. 00_CURRENT_SOURCE_OF_TRUTH.md
-2. 01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md
-3. current sprint file
+1. 25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md
+2. 00_CURRENT_SOURCE_OF_TRUTH.md
+3. 01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md
+4. current sprint file
 
 Follow v2.1 rules.
 Implement only current sprint.
@@ -110,10 +113,17 @@ Run/build/test if available.
 Return: what changed, changed files, how to test, done criteria, what was intentionally not touched, risks/pending.
 ```
 
+## Token-saving prompt to Codex
+
+```text
+Use 25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md as the first navigation file. Select one route only. Do not read every documentation file. Read only the files listed for the selected route, then implement the current sprint.
+```
+
 ## Conflict priority
 
-1. `00_CURRENT_SOURCE_OF_TRUTH.md`
-2. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
-3. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
-4. Current sprint file
-5. Older notes / archives
+1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` for choosing what to read
+2. `00_CURRENT_SOURCE_OF_TRUTH.md` for canonical rules
+3. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
+4. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
+5. Current sprint file
+6. Older notes / archives
