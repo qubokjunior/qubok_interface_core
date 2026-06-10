@@ -7,7 +7,13 @@ last_updated: 2026-06-10
 
 ## Cel
 
-Ten dokument jest głównym wejściem do aktualnej dokumentacji `qubok_interface_core`. Jeżeli inne dokumenty są sprzeczne, ten plik oraz dokumenty v2.1 mają wyższy priorytet niż starsze opisy sprintów.
+Ten dokument jest głównym źródłem prawdy aktualnej dokumentacji `qubok_interface_core`. Jeżeli inne dokumenty są sprzeczne, ten plik oraz dokumenty v2.1 mają wyższy priorytet niż starsze opisy sprintów.
+
+Jeżeli pracujesz z Codex i chcesz oszczędzać tokeny, zacznij od:
+
+`25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
+
+Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie czytać.
 
 ## Aktualny werdykt
 
@@ -77,7 +83,7 @@ Cel: model, commands, command history, selectors, validation, tests i render ada
 
 | Plik | Status | Użycie |
 |---|---|---|
-| `00_CURRENT_SOURCE_OF_TRUTH.md` | active | główny entry point |
+| `00_CURRENT_SOURCE_OF_TRUTH.md` | active | główne źródło prawdy |
 | `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` | active | uzasadnienie techniczne v2.1 |
 | `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` | active | aktualna roadmapa techniczna |
 | `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | active | zasady bibliotek zewnętrznych |
@@ -86,6 +92,7 @@ Cel: model, commands, command history, selectors, validation, tests i render ada
 | `22_FEATURE_DEPENDENCY_MATRIX.md` | active | zależności funkcjonalności |
 | `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md` | active | mapa owner -> command -> view -> validation |
 | `24_CANONICAL_GLOSSARY.md` | active | słownik pojęć |
+| `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` | active | pierwsza mapa nawigacyjna dla Codex |
 
 ## Dokumenty prompt chain
 
@@ -95,14 +102,15 @@ Dokumenty `01`–`14` są aktywne jako prompt chain, ale należy czytać je prze
 
 Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 
-1. Ten plik.
-2. Roadmap v2.1.
-3. Architecture update v2.1.
-4. Implementation changelog v2.1.
-5. External adapter policy.
-6. Current sprint prompt.
-7. Starsze prompt files.
-8. Archiwalne notatki / wcześniejsze visual prompts.
+1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` dla wyboru dokumentów do czytania.
+2. Ten plik dla reguł canonical.
+3. Roadmap v2.1.
+4. Architecture update v2.1.
+5. Implementation changelog v2.1.
+6. External adapter policy.
+7. Current sprint prompt.
+8. Starsze prompt files.
+9. Archiwalne notatki / wcześniejsze visual prompts.
 
 ## Czego obecnie nie robić
 
@@ -118,8 +126,9 @@ Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 
 Nowy czat albo Codex powinien móc przeczytać:
 
-1. `00_CURRENT_SOURCE_OF_TRUTH.md`
-2. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
-3. aktualny sprint file
+1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
+2. `00_CURRENT_SOURCE_OF_TRUTH.md`
+3. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
+4. aktualny sprint file
 
 ...i wykonać jeden ograniczony etap bez czytania całej historii projektu.
