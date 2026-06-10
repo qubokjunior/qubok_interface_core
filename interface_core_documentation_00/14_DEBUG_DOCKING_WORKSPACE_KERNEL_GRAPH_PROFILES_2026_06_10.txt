@@ -1,0 +1,312 @@
+QUBOK_INTERFACE_CORE — DEBUG, DOCKING, WORKSPACE KERNEL, GRAPH PROFILES
+Wersja: 2026-06-10B
+Status: dopisanie wniosków z rozmów o debug_command, spreadsheet filtrach, docking ownership, workspace kernel, curve functions, event weights i profilach state_graph.
+
+1. CEL
+Dokument porządkuje mechaniki runtime/debug i organizację dużych funkcjonalności interface_core. Dotyczy tego, jak nie zamienić state_graph, debug console i docking systemu w chaotyczne worki funkcji.
+
+2. DEBUG_COMMAND / COMMAND CONSOLE
+Debug_command nie powinien być jednym strumieniem wszystkiego. Powinien być kontekstową konsolą command/event/debug, która domyślnie pokazuje akcje powiązane z aktywną selekcją, hover, workspace i mode.
+
+Minimalny wpis logu:
+- time;
+- severity: info / debug / warn / error / fatal;
+- source: canvas / inspector / state_graph / docking / rules / preview / validation;
+- type: user_action / command / validation / runtime / graph / save / event;
+- command_id;
+- target_id;
+- workspace;
+- tool_mode;
+- message;
+- payload_preview;
+- related: selection_id, graph_node_id, rule_id, preview_id.
+
+3. FILTRY DEBUG_COMMAND
+Filtry wymagane w MVP debug:
+- severity: errors only, warnings+, all;
+- workspace: canvas, state_graph, panel_builder, color_tools, docking;
+- selection_related;
+- cursor_related / hover_related;
+- tool_mode: select, primitive_edit, customize_interface, graph_edit, array, color_tools;
+- source system: command, validation, rules, states, graph, preview;
+- time window: last 10s, last command, current session;
+- command chain: wszystkie wpisy powiązane z jednym command_id;
+- noise suppression: pointer_move, hover spam, repeated ok, heartbeat;
+- pinned context: śledź wybrany node/object/rule mimo zmiany widoku.
+
+Domyślny tryb ma pokazywać related actions, nie cały raw stream. Pełny strumień jest dostępny w verbose/debug mode.
+
+4. FEATURE / EVENT / FUNCTION SPREADSHEET
+W projekcie potrzebny jest spreadsheet pokazujący dostępne i zaobserwowane funkcjonalności.
+
+Kolumny:
+- id;
+- display_name;
+- type: command / event / rule / state / relation / graph_node / preview / validator;
+- category: interaction / layout / graph / color / library / debug;
+- source;
+- target_type;
+- enabled;
+- last_seen;
+- count;
+- hover_related;
+- selection_related;
+- severity;
+- graph_id;
+- command_id;
+- status: ok / skipped / blocked / error / active.
+
+Filtry spreadsheet:
+- happened only;
+- cursor related;
+- selection related;
+- workspace scope;
+- severity;
+- event type;
+- active mode;
+- graph connected only;
+- available to graph;
+- blocked/hidden.
+
+5. HISTORY PANEL / HISTORY TIMELINE
+History panel nie powinien być ręcznie zbudowaną listą rectangle. Powinien być widokiem na command_log/history_states.
+
+Data flow:
+command_log / history_states -> query/filter -> item_template -> repeater/list/timeline -> selection/relations.
+
+Minimalne pola history entry:
+- command_id;
+- time;
+- command_type;
+- target_id;
+- before snapshot / diff;
+- after snapshot / diff;
+- status;
+- source workspace;
+- reversible flag;
+- preview adapter.
+
+Akcje:
+- revert_to_state;
+- inspect_command;
+- pin_state;
+- compare_before_after;
+- filter by target;
+- filter by command type.
+
+6. LIBRARY / ASSET BROWSER / PRESET GRID
+Library panel powinien używać data source + query + template + repeater.
+
+Flow:
+Data Source -> Query / Filter -> Sort -> Item Template -> Repeater -> Selection / Relations.
+
+Przykład:
+library_grid.data_source = asset_registry.smart_shapes;
+library_grid.item_template = asset_card_template;
+asset_card_template.image_slot.source = item.thumbnail;
+asset_card_template.title.source = item.display_name;
+asset_card_template.tag.source = item.category;
+asset_card_template.id.source = item.asset_id.
+
+To umożliwia referowanie przez:
+- selected_asset_id;
+- hovered_asset_id;
+- active_library_query;
+- asset_card[index].asset_id;
+- asset_registry[id].metadata.
+
+7. DOCKING / SPLIT / CUSTOMIZE INTERFACE OWNERSHIP
+Należy twardo rozdzielić layout domeny aplikacji od layoutu obiektów i graph viewport.
+
+Domena | Właściciel | Przykładowe akcje
+---|---|---
+app_shell_docking | App Shell | split, merge, dock, undock, float, store layout
+canvas_object_layout | Canvas System | resize, rotate, arrange, align, move object
+graph_viewport_layout | Graph Viewport | pan, zoom, snap, frame, focus
+
+Reguła:
+- split/merge dotyczy APP SHELL LAYOUT only;
+- resize/transform dotyczy CANVAS OBJECTS only;
+- pan/zoom/snap dotyczy GRAPH VIEWPORT only.
+
+8. ELEMENT CAPABILITIES MATRIX
+Typ elementu | Dock into shell | Float | Split/Merge | Resize canvas | Pan/Zoom/Snap | Owner
+---|---|---|---|---|---|---
+Workspace Area | tak | nie | tak | nie | nie | app_shell_docking
+Dock Pane | tak | tak | przez parent area | nie | nie | app_shell_docking
+Panel Content | jako content area | nie samodzielnie | nie | nie | nie | app_shell_docking
+Floating Tool Palette | pin/attach | tak | nie | nie | nie | app_shell_docking
+Canvas Object | nie | nie | nie | tak | nie | canvas_object_layout
+Graph Node | nie | nie | nie | nie | tak w graph viewport | graph_viewport_layout
+Overlay/HUD | pin/attach do viewport | czasem | nie | nie | tak w viewport | overlay_service
+Modal/Popover | tymczasowo attached | tak | nie | nie | nie | app_shell_docking
+
+9. CUSTOMIZE_INTERFACE MODE
+Customize_Interface jest trybem edycji shella i elementów interface, inspirowanym funkcjonalnością typu ZBrush customize UI, ale z własną architekturą.
+
+Minimalne akcje:
+- grab / move UI block;
+- dock to target area;
+- float as window;
+- attach to shelf;
+- hide / show;
+- pin / unpin;
+- store config;
+- restore default;
+- assign shortcut/icon/token later.
+
+Ważne: customize_interface nie może mieszać app shell docking z canvas object transform. Tryb musi jasno oznaczać, czy manipulujemy shell panel, floating palette, HUD czy canvas object.
+
+10. SHARED WORKSPACE KERNEL
+Każdy workspace powinien korzystać ze wspólnego kernelu, ale przez domain adapter.
+
+WorkspaceKernel:
+- viewport camera;
+- grid service;
+- snap service;
+- guide service;
+- selection service;
+- overlay service;
+- preview service;
+- command bus;
+- debug bus;
+- validation hooks.
+
+Workspace adapters:
+- Canvas Editor;
+- State Graph;
+- Procedural Shape Creator;
+- Color Tools;
+- Array;
+- Instance Points;
+- Panel Builder.
+
+11. SNAP CANDIDATES PER WORKSPACE
+Workspace | Snap candidates
+---|---
+Canvas Editor | bbox edge, center, parent padding, sibling edge
+State Graph | node port, reroute point, graph lane, grid
+Procedural Shape Creator | control point, tangent, curve sample, curve normal
+Panel Builder | row boundary, section boundary, region inset, padding guide
+Array | instance bounds, spacing step, index anchor
+Instance Points | point id, point attribute, source bounds
+Color Tools | swatch cell, sample point, palette step
+
+12. CURVE / SHAPE FUNCTIONS
+UI shape graph powinien adaptować wybrane mechaniki Geometry Nodes do 2D UI shape system.
+
+Minimalny model CurveObject:
+- splines[];
+- points[];
+- closed: bool;
+- interpolation: poly / bezier / catmull;
+- length;
+- attributes: point_index, spline_index, factor, length_position, tangent, normal, curvature, radius/width;
+- output_shape.
+
+Funkcja | Parametry | Output | Zastosowanie
+---|---|---|---
+resample_curve | mode: count / length / adaptive | curve | równy rozkład tabs, ticks, points
+trim_curve | start/end factor lub length | curve fragment | progress ring, animated stroke, reveal line
+offset_points | normal/tangent/vector offset | points/curve | outline, inset, shadow path
+sample_curve | factor / length / index | position, tangent, normal | handles, ticks, instances
+set_curve_radius | radius by factor/attribute | width attribute | zmienna grubość shape
+curve_to_shape | fill, stroke, cap, join | visual path | finalny UI shape
+curve_boolean | union/subtract/intersect | shape | notch, cutout, tabs, holes
+curve_bounds | none | bbox, center, size | layout/snap/inspector
+distribute_on_curve | count, spacing, align | points/instances | instance on curve
+factor_to_length | factor | length | mapowanie animacji
+length_to_factor | length | factor | precyzyjne trimowanie
+
+13. EVENT SOURCES
+Źródła eventów:
+- pointer: pointer_down, pointer_up, pointer_move, hover_enter, hover_leave, drag_start, drag_move, drag_end;
+- keyboard: key_down, key_up, shortcut, text_input;
+- time: interval_tick, timeout, animation_frame, delay_end;
+- system: save, load, validation_result, command_applied;
+- workspace: selection_changed, viewport_changed, zoom_changed;
+- graph: node_executed, output_changed, signal_emitted;
+- UI object: state_changed, value_changed, visibility_changed.
+
+14. EVENT BINDING + WEIGHT
+Minimalny model event_binding:
+- event_type;
+- target_query;
+- condition;
+- priority;
+- weight;
+- action;
+- consume_event.
+
+Różnica:
+- priority: stała ważność reguły, np. modal ma priority 1000;
+- weight: dynamiczna ocena kontekstu, np. z_index, distance_to_cursor, interaction_weight;
+- consume_event: czy zatrzymać propagację.
+
+Przykład hit_score:
+hit_score = z_index * 1000 + interaction_weight * 100 + rule_priority - distance_to_cursor.
+
+15. STATE_GRAPH PROFILE SYSTEM
+Jeden graph editor nie powinien oznaczać jednego worka funkcji. Potrzebne są profile.
+
+Profile | Cel | Typowe outputy
+---|---|---
+interaction | reakcje na pointer/keyboard/hover/drag | command, state_change
+rules | decyzje warunkowe | decision, property_override
+relations | połączenia wartości | value_change
+animation / transition / time | zmiany w czasie | timeline_value, transition_result
+object_create | tworzenie obiektów | object_create_command
+shape | procedural shape | shape_output
+signal | pulse/simulate/realtime | signal_output
+debug | diagnostyka | validation_result
+
+16. OUTPUT CONTRACT
+Każdy graph profile wymaga jawnego outputu. Jeśli outputu nie ma, graph jest invalid.
+
+Profile | Required output
+---|---
+interaction | command / state_change
+rules | decision / property_override
+relations | value_change
+animation | timeline_value / transition_result
+object_create | object_create_command
+shape | shape_output
+signal | signal_output
+debug | validation_result
+
+17. NODE PALETTE FILTERING
+Funkcja ma cztery poziomy dostępności:
+- core_available: funkcja istnieje w systemie;
+- graph_available: funkcja może być użyta jako node;
+- profile_allowed: funkcja jest dozwolona w danym profilu graphu;
+- context_suggested: funkcja jest sensowna dla aktualnej selekcji, hover, mode lub workspace.
+
+Przykład:
+create_rectangle:
+- core_available: true;
+- graph_available: true;
+- allowed_profiles: object_create, shape;
+- hidden_in: rules, relations, animation.
+
+map_range:
+- core_available: true;
+- graph_available: true;
+- allowed_profiles: rules, relations, animation, shape;
+- suggested_when: selected numeric property.
+
+18. GRAPH LANES
+Profile graphu powinny mieć czytelne pasy:
+- EVENTS;
+- TARGET;
+- DECISION;
+- UPDATE;
+- OUTPUT.
+
+Dla relation graph:
+- SOURCE;
+- MAP;
+- TARGETS;
+- OUTPUT.
+
+19. WNIOSEK
+Wszystko może istnieć w registry, ale nie wszystko powinno być zawsze widoczne. Każdy workspace filtruje funkcje według graph profile, active mode, selection, cursor context, permissions i debug verbosity. Dzięki temu state_graph pozostaje systemem, nie atrapą i nie chaotycznym workiem nodów.
