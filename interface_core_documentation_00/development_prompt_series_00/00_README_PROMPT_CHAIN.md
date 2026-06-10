@@ -1,8 +1,13 @@
 # QUBOK_INTERFACE_CORE — development prompt chain 00
 
+status: active
+version: v2.1
+doc_type: prompt_chain_index
+last_updated: 2026-06-10
+
 Cel pakietu: seria dokumentów do prowadzenia developmentu `qubok_interface_core` prompt po promptcie, z założeniem że poprzedni prompt zakończył się sukcesem: build przechodzi, testy manualne przeszły, a scope nie rozlał się poza fazę.
 
-Ten pakiet nie zastępuje pełnej dokumentacji architektury. Jest warstwą wykonawczą: ma skracać kontekst, zmniejszać zużycie tokenów i poprawiać jakość kodu przez małe, zamknięte sprinty.
+Ten pakiet jest jednocześnie warstwą wykonawczą i aktualnym indeksem dokumentacji. Główny canonical entry point to `00_CURRENT_SOURCE_OF_TRUTH.md`.
 
 ## Status po aktualizacji v2.1
 
@@ -21,11 +26,14 @@ Weryfikacja techniczna i rozwój dokumentacji nie zmieniają głównego kierunku
 1. `Project JSON / data model` jest source of truth.
 2. `src/core` nie importuje React ani `creator`.
 3. React UI nie mutuje modelu bezpośrednio; wszystkie trwałe zmiany idą przez command layer.
-4. `visual_bbox`, `layout_bbox` i `interaction_region` są oddzielnymi pojęciami.
-5. `Rectangle` renderuje shape; `Region` obsługuje hit/hover/drag/drop/resize/snap/scroll.
-6. Default UI pokazuje tylko funkcje L3/L4. Debug, graph, docking workbench i eksperymenty nie dominują ekranu startowego.
-7. Każdy sprint ma jeden dominujący cel, listę zakazów i kryteria akceptacji.
-8. Każdy external library choice musi odpowiedzieć: czy to adapter widoku, czy właściciel danych. Właścicielem danych pozostaje Project/core.
+4. Command history / undo contract musi istnieć przed ciężką edycją canvasu.
+5. Selectors są wspólną warstwą odczytu dla canvas, inspector, hierarchy, status i target resolver.
+6. `visual_bbox`, `layout_bbox` i `interaction_region` są oddzielnymi pojęciami.
+7. `Rectangle` renderuje shape; `Region` obsługuje hit/hover/drag/drop/resize/snap/scroll.
+8. Render adapter oddziela Project od SVG/HTML renderer.
+9. Default UI pokazuje tylko funkcje L3/L4. Debug, graph, docking workbench i eksperymenty nie dominują ekranu startowego.
+10. Każdy sprint ma jeden dominujący cel, listę zakazów i kryteria akceptacji.
+11. Każdy external library choice musi odpowiedzieć: czy to adapter widoku, czy właściciel danych. Właścicielem danych pozostaje Project/core.
 
 ## Poziomy dojrzałości
 
@@ -38,7 +46,21 @@ Weryfikacja techniczna i rozwój dokumentacji nie zmieniają głównego kierunku
 | L4 | POLISHED_TOOL | stabilny UX, inspector, validation, shortcuts | default allowed |
 | L5 | ADVANCED_COMPOSABLE | asset/graph/plugin-ready subsystem | zależnie od fazy |
 
-## Kolejność użycia dokumentów
+## Minimalne wejście dla AI/Codex
+
+Przy implementacji jednego sprintu wystarczy zwykle:
+
+1. `00_CURRENT_SOURCE_OF_TRUTH.md`
+2. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
+3. aktualny plik sprintu
+
+Przy diagnozie architektury dodatkowo czytać:
+
+- `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
+- `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
+- właściwy policy/matrix/glossary document.
+
+## Kolejność użycia dokumentów sprintowych
 
 1. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md` — stała reguła pisania kolejnych promptów.
 2. `02_SPRINT_00_FOUNDATION_AUDIT_PROMPT.md` — audyt struktury i decyzji.
@@ -54,10 +76,22 @@ Weryfikacja techniczna i rozwój dokumentacji nie zmieniają głównego kierunku
 12. `12_SPRINT_10_STATE_GRAPH_WORKSPACE_PROMPT.md` — graph workspace dopiero po registry.
 13. `13_SPRINT_11_ADVANCED_POST_MVP_PROMPT.md` — advanced/post-MVP bez psucia core.
 14. `14_NEXT_CHAT_STARTER_TEMPLATE.md` — krótki szablon nowego czatu.
-15. `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` — szczegółowe uzasadnienie zmian v2.1.
-16. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` — zaktualizowana kolejność faz i bramek.
-17. `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` — zasady użycia bibliotek zewnętrznych jako adapterów.
-18. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` — co zmienić w istniejących promptach, jeśli były już używane.
+
+## Canonical / policy / matrix documents
+
+| Plik | Rola |
+|---|---|
+| `00_CURRENT_SOURCE_OF_TRUTH.md` | główny entry point i priority rules |
+| `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` | diagnoza i uzasadnienie zmian v2.1 |
+| `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` | aktualna roadmapa techniczna |
+| `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | zasady bibliotek zewnętrznych jako adapterów |
+| `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` | korekta starszych promptów |
+| `19_DOC_STATUS_AND_ARCHIVE_INDEX.md` | status dokumentów i reguły archiwizacji |
+| `20_AI_CONTEXT_MINIMAL.md` | najkrótszy kontekst dla AI/Codex |
+| `21_DOCUMENTATION_HEALTH_CHECKLIST.md` | checklist utrzymania dokumentacji |
+| `22_FEATURE_DEPENDENCY_MATRIX.md` | zależności funkcjonalności |
+| `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md` | mapa owner -> command -> view -> validation |
+| `24_CANONICAL_GLOSSARY.md` | słownik pojęć |
 
 ## Reguła pracy
 
@@ -66,3 +100,13 @@ Nie łączyć dwóch dokumentów sprintowych w jeden prompt, jeśli oba dotykaj�
 ## Najważniejsza zmiana mentalna
 
 Pierwotny plan był poprawny funkcjonalnie. Aktualizacja v2.1 wzmacnia go technicznie: mniej nowych paneli na raz, więcej testowalnego core, historii komend, selektorów, adapterów i performance guardrails przed rozbudową graph/docking/advanced.
+
+## Konflikt dokumentów
+
+Jeżeli dokumenty mówią co innego, priorytet ma:
+
+1. `00_CURRENT_SOURCE_OF_TRUTH.md`
+2. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
+3. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
+4. aktualny sprint file
+5. starsze notatki i reference files
