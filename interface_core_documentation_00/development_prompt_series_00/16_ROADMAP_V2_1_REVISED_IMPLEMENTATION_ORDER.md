@@ -1,8 +1,20 @@
-# 16 — Roadmap v2.1: revised implementation order
+# 16 — Roadmap v2.2: revised implementation order
+
+status: active
+version: v2.2
+doc_type: roadmap
+last_updated: 2026-06-10
 
 ## Cel dokumentu
 
-Ten dokument aktualizuje kolejność developmentu po diagnozie v2.1. Nie kasuje poprzedniej roadmapy. Doprecyzowuje kolejność tak, aby techniczne fundamenty pojawiły się przed rozbudową UI, graphu i dockingu.
+Ten dokument aktualizuje kolejność developmentu po diagnozie v2.1 oraz migracji nazewnictwa v2.2. Nie kasuje poprzedniej roadmapy. Doprecyzowuje kolejność tak, aby techniczne fundamenty pojawiły się przed rozbudową UI, node graphu i dockingu.
+
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
 
 ## Główna korekta
 
@@ -12,10 +24,10 @@ Poprzednia kolejność była dobra funkcjonalnie, ale zbyt mało eksponowała te
 - selectors przed canvas/inspector/hierarchy sync,
 - headless tests przed ciężkim UI,
 - render adapter przed zależnością od SVG,
-- performance baseline przed dużym canvasem i graph workspace,
-- external adapter policy przed docking/graph library decisions.
+- performance baseline przed dużym canvasem i node graph workspace,
+- external adapter policy przed docking/node graph library decisions.
 
-## Roadmapa v2.1
+## Roadmapa v2.2
 
 | Etap | Nazwa | Cel | Maturity |
 |---|---|---|---|
@@ -40,7 +52,7 @@ Poprzednia kolejność była dobra funkcjonalnie, ale zbyt mało eksponowała te
 | N | Layout/snap/panel builder | align, distribute, snap, box arranger, structured panels | L3 |
 | O | App shell docking | split/merge/resize application panels only | L3/L4 |
 | P | Events/actions | headless event registry, action registry, target resolver | L1/L2/L3 |
-| Q | State graph workspace | visual graph over events/actions, outputs commands | L2/L3 |
+| Q | Node graph workspace | visual node graph over events/actions, outputs commands | L2/L3 |
 | R | Advanced | shape/path, reactions, procedural icons, external bridges | L0-L5 gated |
 
 ## Bramy przejścia
@@ -97,36 +109,14 @@ Nie przechodzić dalej, jeśli:
 - Docking state jest mieszany z canvas object layout.
 - Docking library przejmuje source of truth.
 
-### Gate P/Q — Logic/graph gate
+### Gate P/Q — Logic/node graph gate
 
 Nie przechodzić dalej, jeśli:
 
-- Event/action registry wymaga visual graph do działania.
-- Graph patchuje DOM/canvas bez command layer.
-- Graph viewport jest tym samym viewportem co canvas.
+- Event/action registry wymaga visual node graph do działania.
+- Node graph patchuje DOM/canvas bez command layer.
+- Node graph viewport jest tym samym viewportem co canvas.
 - Node state istnieje tylko w React Flow lub innym view adapterze.
-
-## Zmieniona struktura sprintów
-
-Istniejący `SPRINT 02` powinien objąć więcej headless fundamentów:
-
-```text
-Core model
-+ command layer
-+ command history
-+ selectors
-+ validation
-+ tests
-+ render adapter types
-```
-
-Dopiero później:
-
-```text
-Canvas renderer
-+ primitive creation
-+ selection/transform
-```
 
 ## Minimalne testy, które powinny istnieć wcześnie
 
@@ -149,9 +139,9 @@ Canvas renderer
 | Canvas MVP | 100 obiektów bez zauważalnego lag |
 | Inspector/hierarchy sync | 1000 obiektów z akceptowalnym selection change |
 | Region debug | overlay tylko dla selected/hover albo trybów debug |
-| Graph workspace | pan/zoom bez re-render całej aplikacji |
+| Node graph workspace | pan/zoom bez re-render całej aplikacji |
 | Component library | preview generowany kontrolowanie, nie na każdy render |
 
 ## Priorytet aktualny
 
-Najbliższy rozwój powinien skoncentrować się na `Sprint 02 v2.1`. To jest najważniejszy etap wzmacniający dalszy development. Bez niego następne sprinty będą łatwe do napisania, ale trudne do utrzymania.
+Najbliższy rozwój powinien skoncentrować się na `Sprint 02 v2.2`. To jest najważniejszy etap wzmacniający dalszy development. Bez niego następne sprinty będą łatwe do napisania, ale trudne do utrzymania.
