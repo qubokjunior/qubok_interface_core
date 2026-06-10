@@ -1,13 +1,20 @@
 # 29 — Roadmap success acceptance map
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: roadmap_acceptance_map
 last_updated: 2026-06-10
 
 ## Cel
 
 Ten dokument opisuje, co dokładnie oznacza sukces każdego etapu roadmapy: co zostało zaimplementowane, z czym się wiąże, jakie moduły są dotknięte i jak testować. Ma pomagać po każdym kroku developmentu ocenić, czy można przejść dalej.
+
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
 
 ## Jak używać
 
@@ -38,15 +45,15 @@ Jeżeli acceptance nie przechodzi, użyj `26_CODEX_REPAIR_PLAYBOOK.md` i nie prz
 | Selection / transform | click/shift/box select, move/resize/delete through commands | canvas, commands, selectors | inspector, hierarchy, layout tools | canvas/inspector/hierarchy show same selected object; transform is undoable or logged |
 | Inspector / hierarchy sync | schema-driven inspector, hierarchy tree, status sync | creator/panels, core/selectors | object editing, group/component workflows | inspector patch dispatches command; hierarchy reflects Project links |
 | BBox / region debug | visual/layout/interaction overlays and region inspector/debug modes | core/render, core/validation, creator/debug | hit-test, events, layout validation | overlays are distinguishable and hidden/subtle in normal mode |
-| Performance baseline | object count tiers, pointer throttling/local drag session, first hit-test strategy | canvas, selectors, geometry | larger projects, graph/workspaces | 100 objects smooth; debug does not render all labels by default |
+| Performance baseline | object count tiers, pointer throttling/local drag session, first hit-test strategy | canvas, selectors, geometry | larger projects, node graph/workspaces | 100 objects smooth; debug does not render all labels by default |
 | Component proof | Button_Group and Panel_Monitor as Project data | samples, core/model, validation | component library, export proof | Panel_Monitor validates and is not hardcoded JSX |
 | Save / export | Project JSON, Component JSON, SVG, debug report | core/export, samples | persistence, sharing, regression | export/import roundtrip does not break IDs/parents/regions |
 | Default UI cleanup | compact concept-aligned interface creator, debug hidden, readable panels | creator/layout, styles | usable MVP | default UI is not debug dashboard; main actions visible and compact |
 | Component library | save group/panel as component, insert with fresh IDs | core/library, creator/panels | reusable UI assets | component insert creates valid unique IDs and passes validation |
 | Layout / panel builder | align, distribute, snap, box arranger, panel creator | core/layout, canvas/tools | structured UI creation | layout commands affect selected objects, not app docking |
 | Docking shell | split/merge/resize app panels, content registry, DockLayout | core/docking, creator/shell | flexible workspace | docking changes do not alter InterfaceObject transforms |
-| Events / actions | headless event registry, action registry, target resolver, assignments | core/events | state graph, interaction logic | event assignment can output command without visual graph |
-| State graph workspace | graph model, graph viewport, nodes/edges, command output | core/stateGraph, creator/workspaces | visual logic authoring | graph pan/zoom/selection works; graph does not patch DOM/canvas directly |
+| Events / actions | headless event registry, action registry, target resolver, assignments | core/events | node graph, interaction logic | event assignment can output command without visual node graph |
+| Node graph workspace | node graph model, node graph viewport, nodes/edges, command output | core/nodeGraph, creator/workspaces | visual logic authoring | node graph pan/zoom/selection works; node graph does not patch DOM/canvas directly |
 | Advanced post-MVP | gated features: procedural icons, reactions, bridges, bitmap/GPU, Tauri | advanced modules | future expansion | each feature has maturity, owner, adapter policy and hidden/default decision |
 
 ## Detailed acceptance by stage
@@ -138,18 +145,18 @@ Test:
 - reset layout,
 - verify InterfaceObject positions unchanged.
 
-### Events / state graph
+### Events / node graph
 
 Implemented:
 - events/actions first,
-- graph model/workspace later,
-- graph outputs command payloads.
+- node graph model/workspace later,
+- node graph outputs command payloads.
 
 Test:
 - event assignment can call command-backed action,
-- graph can be serialized,
-- graph viewport is separate from canvas viewport,
-- visual graph is not required for event registry to exist.
+- node graph can be serialized,
+- node graph viewport is separate from canvas viewport,
+- visual node graph is not required for event registry to exist.
 
 ## Done report template
 
