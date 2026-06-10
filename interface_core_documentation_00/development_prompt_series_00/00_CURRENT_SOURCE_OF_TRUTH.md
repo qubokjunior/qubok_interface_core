@@ -1,13 +1,13 @@
 # 00 — Current source of truth for qubok_interface_core
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: canonical_entry_point
 last_updated: 2026-06-10
 
 ## Cel
 
-Ten dokument jest głównym źródłem prawdy aktualnej dokumentacji `qubok_interface_core`. Jeżeli inne dokumenty są sprzeczne, ten plik oraz dokumenty v2.1 mają wyższy priorytet niż starsze opisy sprintów.
+Ten dokument jest głównym źródłem prawdy aktualnej dokumentacji `qubok_interface_core`. Jeżeli inne dokumenty są sprzeczne, ten plik oraz dokumenty v2.2 mają wyższy priorytet niż starsze opisy sprintów.
 
 Jeżeli pracujesz z Codex i chcesz oszczędzać tokeny, zacznij od:
 
@@ -15,9 +15,25 @@ Jeżeli pracujesz z Codex i chcesz oszczędzać tokeny, zacznij od:
 
 Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie czytać.
 
+## Nazewnictwo obowiązujące od v2.2
+
+- Używać `node_graph`, `nodeGraph`, `NodeGraph` i „node graph”.
+- Nie używać już `state_graph`, `stateGraph`, `StateGraph` ani „state graph” w nowych dokumentach i kodzie.
+- Jeżeli starszy dokument lub kod używa starej nazwy, traktować ją jako superseded i migrować do `node_graph`.
+- Właściwa nazwa projektu: `qubok_interface_core` albo skrócone `interface_core`, zależnie od kontekstu.
+- Nie używać tymczasowych nazw typu `interface_core_00` / `qubok_interface_core_00` dla aktualnego projektu.
+
+## Lokalna ścieżka projektu na PC
+
+```text
+I:\Art\_AI\app_development\qubok_interface_core
+```
+
+Ta ścieżka jest lokalną ścieżką roboczą użytkownika. GitHub repo nadal pozostaje `qubokjunior/qubok_interface_core`.
+
 ## Aktualny werdykt
 
-`qubok_interface_core` pozostaje parametrycznym silnikiem UI, nie UI kitem i nie pojedynczą aplikacją. Każdy element interface powinien być obiektem danych w Project modelu. Canvas, inspector, hierarchy, export, component library, debug, events i state graph są widokami albo warstwami operacyjnymi nad tym modelem.
+`qubok_interface_core` pozostaje parametrycznym silnikiem UI, nie UI kitem i nie pojedynczą aplikacją. Każdy element interface powinien być obiektem danych w Project modelu. Canvas, inspector, hierarchy, export, component library, debug, events i node graph są widokami albo warstwami operacyjnymi nad tym modelem.
 
 ## Obowiązujące zasady
 
@@ -30,11 +46,11 @@ Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie 
 7. `visual_bbox`, `layout_bbox` i `interaction_region` są oddzielne.
 8. Rectangle renderuje shape. Region obsługuje hit/hover/drag/drop/resize/snap/scroll.
 9. Render MVP może być SVG/HTML, ale core używa render adaptera.
-10. Event/action registry jest osobną headless warstwą, nie częścią visual state graph.
+10. Event/action registry jest osobną headless warstwą, nie częścią visual node graph.
 11. External libraries mogą być tylko adapterami, nie właścicielami danych.
 12. Default UI pokazuje tylko L3/L4. Debug, graph, docking workbench i eksperymenty nie dominują ekranu startowego.
 13. Panel_Monitor sample musi być Project data, nie hardcoded JSX mockup.
-14. Tauri, bridges, procedural icons, bitmap graph i advanced graph tools są post-MVP albo experimental.
+14. Tauri, bridges, procedural icons, bitmap graph i advanced node graph tools są post-MVP albo experimental.
 
 ## Aktualna roadmapa wysokiego poziomu
 
@@ -60,13 +76,13 @@ Foundation
 -> Layout / panel builder
 -> Docking shell
 -> Events / actions
--> State graph workspace
+-> Node graph workspace
 -> Advanced post-MVP
 ```
 
 ## Aktualny najbliższy priorytet
 
-Najbliższy development powinien wykonać `Sprint 02 v2.1`:
+Najbliższy development powinien wykonać `Sprint 02 v2.2`:
 
 ```text
 src/core/model
@@ -84,19 +100,19 @@ Cel: model, commands, command history, selectors, validation, tests i render ada
 | Plik | Status | Użycie |
 |---|---|---|
 | `00_CURRENT_SOURCE_OF_TRUTH.md` | active | główne źródło prawdy |
-| `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` | active | uzasadnienie techniczne v2.1 |
-| `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` | active | aktualna roadmapa techniczna |
-| `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | active | zasady bibliotek zewnętrznych |
-| `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` | active | korekty dla starszych promptów |
+| `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` | active_with_v2_2_naming | uzasadnienie techniczne v2.1/v2.2 |
+| `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` | active_with_v2_2_naming | aktualna roadmapa techniczna |
+| `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | active_with_v2_2_naming | zasady bibliotek zewnętrznych |
+| `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` | active_with_v2_2_naming | korekty dla starszych promptów |
 | `20_AI_CONTEXT_MINIMAL.md` | active | najkrótszy kontekst dla AI/Codex |
-| `22_FEATURE_DEPENDENCY_MATRIX.md` | active | zależności funkcjonalności |
-| `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md` | active | mapa owner -> command -> view -> validation |
-| `24_CANONICAL_GLOSSARY.md` | active | słownik pojęć |
+| `22_FEATURE_DEPENDENCY_MATRIX.md` | active_with_v2_2_naming | zależności funkcjonalności |
+| `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md` | active_with_v2_2_naming | mapa owner -> command -> view -> validation |
+| `24_CANONICAL_GLOSSARY.md` | active_with_v2_2_naming | słownik pojęć |
 | `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` | active | pierwsza mapa nawigacyjna dla Codex |
 
 ## Dokumenty prompt chain
 
-Dokumenty `01`–`14` są aktywne jako prompt chain, ale należy czytać je przez korektę v2.1 z `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`.
+Dokumenty `01`–`14` są aktywne jako prompt chain, ale należy czytać je przez korektę v2.2 z `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`.
 
 ## Reguła konfliktu
 
@@ -104,9 +120,9 @@ Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 
 1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` dla wyboru dokumentów do czytania.
 2. Ten plik dla reguł canonical.
-3. Roadmap v2.1.
-4. Architecture update v2.1.
-5. Implementation changelog v2.1.
+3. Roadmap v2.2.
+4. Architecture update v2.1/v2.2.
+5. Implementation changelog v2.2.
 6. External adapter policy.
 7. Current sprint prompt.
 8. Starsze prompt files.
@@ -114,7 +130,7 @@ Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 
 ## Czego obecnie nie robić
 
-- Nie zaczynać od full state graph UI.
+- Nie zaczynać od full node graph UI.
 - Nie dodawać docking jako pierwszej dużej funkcji.
 - Nie dodawać React Flow/FlexLayout/XState/Tauri przed ich adapter boundary.
 - Nie budować sample scene jako JSX mockup.
