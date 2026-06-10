@@ -1,13 +1,20 @@
 # 22 — Feature dependency matrix
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: canonical_matrix
 last_updated: 2026-06-10
 
 ## Cel
 
 Mapa zależności funkcji. Używać przed planowaniem sprintu, aby nie implementować funkcji zanim istnieją jej wymagane warstwy.
+
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
 
 ## Matrix
 
@@ -40,12 +47,12 @@ Mapa zależności funkcji. Używać przed planowaniem sprintu, aby nie implement
 | Snap tools | bbox, layout, canvas drag | precise editing | geometry/layout | L3 |
 | Panel builder | group, layout, region | reusable panels, component library | group_data / region_data | L3 |
 | Docking shell | app shell layout, content registry | workspace presets, split/merge panels | DockLayout | L3/L4 |
-| Event registry | command layer, target resolver | state graph, interaction logic | core/events | L2/L3 |
-| Action registry | command layer | event assignments, state graph | core/events | L2/L3 |
+| Event registry | command layer, target resolver | node graph, interaction logic | core/events | L2/L3 |
+| Action registry | command layer | event assignments, node graph | core/events | L2/L3 |
 | Target resolver | selectors, regions, selection | event/action registry, graph outputs | core/events | L2/L3 |
-| State graph model | events/actions, commands | graph workspace | Project.state_graphs | L2/L3 |
-| State graph workspace | graph model, viewport, adapter policy | visual logic editing | creator/workspaces | L3/L4 later |
-| React Flow adapter | graph model, adapter policy | faster graph UI | graph UI adapter | L2/L3 |
+| Node graph model | events/actions, commands | node graph workspace | Project.node_graphs | L2/L3 |
+| Node graph workspace | node graph model, viewport, adapter policy | visual logic editing | creator/workspaces | L3/L4 later |
+| React Flow adapter | node graph model, adapter policy | faster node graph UI | graph UI adapter | L2/L3 |
 | External docking adapter | DockLayout, adapter policy | complex dock UI | docking UI adapter | L2/L3 |
 | Tauri wrapper | save/load adapters, stable app shell | desktop packaging | desktop shell | post-MVP |
 | Procedural icons | primitives, export, component asset | icon system | advanced assets | L1/L2 later |
@@ -66,7 +73,7 @@ Project model
 ```text
 commands + selectors + regions
   -> events/actions
-  -> state graph
+  -> node graph
 ```
 
 ```text
@@ -86,8 +93,8 @@ DockLayout nie zależy od canvas object layout i nie powinien go modyfikować.
 
 | Feature | Nie zaczynać przed |
 |---|---|
-| Full state graph UI | events/actions + graph model + graph viewport |
-| React Flow adapter | Project.state_graphs model |
+| Full node graph UI | events/actions + node graph model + node graph viewport |
+| React Flow adapter | Project.node_graphs model |
 | Full docking library | DockLayout model |
 | Linked component instances | component library MVP + validation |
 | Procedural icon engine | primitive/export/component basics |
