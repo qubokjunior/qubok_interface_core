@@ -1,0 +1,91 @@
+QUBOK_INTERFACE_CORE — VISUAL DIAGNOSTICS AND INTERFACE SCREENSHOT STANDARD
+Wersja: 2026-06-10
+Status: aktualizacja dokumentacji po serii rozmów i grafik z ostatnich ok. 2 dni.
+
+1. CEL DOKUMENTU
+Ten dokument zapisuje wnioski z diagnozy wygenerowanych grafik interface_core. Główny problem wcześniejszych serii polegał na mieszaniu realnego widoku aplikacji z infografiką. Od tej aktualizacji standardem jest: każdy obraz ma wyglądać jak działający interface w czasie pracy, a nie jak slajd, poster, plansza edukacyjna albo dekoracyjny atlas.
+
+2. KANONICZNY KIERUNEK WIZUALIZACJI
+Wizualizacje dokumentacyjne mają przedstawiać realny stan narzędzia qubok_interface_core:
+- stabilny app shell: top bar, left sidebar, center workspace, right inspector, bottom shelf, status bar;
+- jeden dominujący mechanizm na ekran;
+- aktywną selekcję lub aktywny node/modifier/rule/state;
+- runtime panels: log, trace, validation, command queue, changed values, issues;
+- czytelny dark interface podobny do narzędzia produkcyjnego, nie do marketingowej grafiki;
+- solidne panele i chip labels, bez przezroczystego tekstu na tekście;
+- konsekwentne kolory semantyczne.
+
+3. ELEMENTY WCZEŚNIEJ NIEPOŻĄDANE
+Element | Problem | Obowiązująca korekta
+---|---|---
+Infographic cards | Karty typu workflow/checklist/acceptance wyglądały jak slajd | Zastępować je panelami runtime: Execution Trace, Validation Issues, Command Log, Export Queue.
+Duże dekoracyjne ikony | Sugerowały infographic/poster zamiast aplikacji | Ikony 12-18 px, wyłącznie funkcjonalne.
+Tekst na przezroczystym tle | Powodował ghost text i utratę czytelności | Każdy panel/chip/node ma solidny dark backplate.
+Labelki na content | Bbox/debug labels zasłaniały search fields, socket rows, slider, tabele | Labelki poza contentem, z leader line i marginesem min. 8-12 px.
+Chaotyczne node wires | Linie przechodziły przez nody i tekst | Orthogonal routing, wire lanes, reroute points, brak przechodzenia przez node body.
+Brak outputów | Nie było wiadomo, co node/graph emituje | Każdy graph musi mieć jawny output: command, shape, value, asset, target.
+Wszystko naraz | Debug, graph, inspector i poster były mieszane w jednym ekranie | Jeden ekran = jeden główny mechanizm; reszta tylko wspiera.
+Idealne all ok | Ekrany wyglądały sztucznie i statycznie | Dopuszczać kontrolowane warnings, dirty flags, pending commands, skipped rules.
+Niespójne dane | Liczniki i tytuły nie zawsze zgadzały się z wizualizacją | Dane muszą być spójne: IDs, counts, active tab, title, values.
+
+4. STANDARD SHELLA DLA GRAFIK
+Stały shell powinien zawierać:
+- TopAppBar: qubok_interface_core, v0.0.0, document_name lub nazwa ekranu, last_saved_data, status clean/dirty, step chips 01-08.
+- Left rail: hierarchy, object tree, asset list, node list, point sources lub primitive/tools zależnie od trybu.
+- Center workspace: canvas, graph viewport, layout preview, responsive previews albo procedural workspace.
+- Right rail: Inspector, States, Rules, Relations, Array, Node Inspector lub Validation.
+- Bottom shelf: realne logi i diagnostyka, nie opis architektury.
+- StatusBar: mode, theme: dark, grid, snap, zoom, auto save, ready.
+
+5. STANDARD NODE GRAPH
+Każdy node graph musi spełniać następujące zasady:
+- input sockets po lewej, output sockets po prawej;
+- każdy socket ma nazwę i typ danych;
+- node ma header, body rows i selected outline, jeśli jest aktywny;
+- przewody idą poziomo/pionowo pod kątem 90 stopni;
+- stosować reroute points jako małe dots/diamonds;
+- nie prowadzić przewodów przez tekst, header, socket labels ani node body;
+- flow od lewej do prawej;
+- output graphu musi być widoczny i nazwany;
+- jeśli graph jest gęsty, przewody mają osobne lanes nad/pod nodami;
+- kolory przewodów są semantyczne: purple event, cyan data/target, yellow condition/query, green pass/command, red fail/error, gray preview/debug.
+
+6. STANDARD BBOX / REGION / DEBUG
+Debug layout powinien rozróżniać:
+- visual_bbox: cyan, co widzimy i eksportujemy wizualnie;
+- layout_bbox: orange, ile miejsca zajmuje obiekt w układzie;
+- interaction_region: green, co reaguje na hit/hover/drag/drop;
+- snap guides: subtelne linie, najlepiej pod contentem albo przerwane na obszarze czytelnego UI;
+- debug labels: wyłącznie poza komponentem albo w panelach inspektora.
+
+7. OCENA OSTATNICH SERII GRAFIK
+Seria roadmap/interface 01-08:
+- silna poprawa spójności shella i czytelności;
+- pozostały problemy posterowych bottom panels i zbyt statycznych ekranów;
+- state graph powinien być pełny tylko w ekranie logic/graph;
+- bottom shelf powinien być runtime/debug panel, nie planszą podsumowującą.
+
+Seria rules/states/responsive/relations/procedural:
+- najlepszy dotąd kierunek, bo większość ekranów wygląda jak realne narzędzie;
+- najtrafniejsze ekrany: responsiveness, value relations, relation graph, instance on points, array;
+- wykryty błąd danych: przykład grid_10x6 nie może jednocześnie oznaczać 120 pts i 10x6 = 60 points;
+- screen title musi zgadzać się z tematem, np. rules nie powinien mieć nazwy foundation_shell_source_of_truth;
+- następnym krokiem jest pokazywanie operacji w toku: pending command, dirty state, preview before/after, changed values.
+
+8. QUALITY GATE PRZED AKCEPTACJĄ PNG
+Przed uznaniem grafiki za poprawną sprawdzić:
+1. Czy wygląda jak realna aplikacja, nie infografika?
+2. Czy ekran ma jeden główny mechanizm?
+3. Czy title/top chip zgadza się z tematem?
+4. Czy canvas nie jest przeciążony tekstem?
+5. Czy wszystkie panele są solidne i czytelne?
+6. Czy labels nie zasłaniają contentu?
+7. Czy bottom shelf to log/trace/validation/queue, a nie poster?
+8. Czy dane liczbowe są spójne?
+9. Czy node wires nie przechodzą przez tekst/nody?
+10. Czy aktywna selekcja/aktywny node/aktywny rule/state jest jasny?
+11. Czy jest widoczny rezultat działania systemu?
+12. Czy występuje przynajmniej jeden realny runtime state: pending, dirty, warning, changed, selected, applied, skipped albo active?
+
+9. JEDNOZDANIOWY WNIOSEK
+Wizualizacje qubok_interface_core mają dokumentować parametryczny interface engine przez stany robocze aplikacji: model, selekcję, inspektor, runtime logs, graph outputs i walidację — nie przez dekoracyjne infografiki.
