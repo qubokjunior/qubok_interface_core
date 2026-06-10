@@ -1,11 +1,23 @@
 # 13 — Sprint 11: Advanced / post-MVP expansion
 
+status: active_with_v2_2_amendment
+version: v2.2
+doc_type: sprint_prompt
+last_updated: 2026-06-10
+
 Cel: dodać regułę ekspansji po stabilnym MVP. Ten dokument nie jest jednym sprintem implementacyjnym, tylko bramką dla późniejszych funkcji: shape/path, procedural icons, reaction layer, external bridges, bitmap/GPU experiments.
 
-SPRINT 11 — Advanced post-MVP feature gate
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
+
+## SPRINT 11 — Advanced post-MVP feature gate
 
 Assume previous sprint successful:
-- Core, canvas, inspector, hierarchy, component library, panel builder, docking, events and state graph are stable or explicitly marked by maturity level.
+- Core, canvas, inspector, hierarchy, component library, panel builder, docking, events and node graph are stable or explicitly marked by maturity level.
 - npm run build passed.
 
 Global rules:
@@ -37,7 +49,7 @@ Candidate advanced features:
    - export to component/SVG
 5. External bridges:
    - Blender/Geometry Nodes references
-   - Substance/Houdini style graph references
+   - Substance/Houdini style node graph references
    - import/export adapters
 6. Bitmap/GPU experiments:
    - experimental only
