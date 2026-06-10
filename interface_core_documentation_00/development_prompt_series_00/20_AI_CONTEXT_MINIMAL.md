@@ -1,7 +1,7 @@
 # 20 — AI context minimal
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: ai_minimal_context
 last_updated: 2026-06-10
 
@@ -14,6 +14,20 @@ Jeżeli Codex ma sam zdecydować, które dokumenty czytać, użyj najpierw `25_C
 ## Projekt
 
 `qubok_interface_core` to parametryczny silnik UI dla przyszłych aplikacji QUBOK. Nie jest to UI kit, theme ani pojedynczy app mockup. Każdy element interface jest obiektem danych w Project modelu.
+
+Short name: `interface_core`.
+
+Local PC path:
+
+```text
+I:\Art\_AI\app_development\qubok_interface_core
+```
+
+## Naming v2.2
+
+- Use `node_graph`, `nodeGraph`, `NodeGraph` and `node graph`.
+- Do not add new references using old `state_graph` naming.
+- Do not use temporary project names ending with `_00`.
 
 ## Stack
 
@@ -36,7 +50,7 @@ Jeżeli Codex ma sam zdecydować, które dokumenty czytać, użyj najpierw `25_C
 8. `visual_bbox`, `layout_bbox` and `interaction_region` are separate.
 9. Rectangle renders. Region interacts.
 10. Render adapter separates Project from SVG/HTML renderer.
-11. Event/action registry is headless and separate from visual state graph.
+11. Event/action registry is headless and separate from visual node graph.
 12. External libraries are adapters only.
 13. Default UI exposes only L3/L4.
 14. Debug, graph, docking and experiments do not dominate the default screen.
@@ -66,7 +80,7 @@ Foundation
 -> Layout / panel builder
 -> Docking shell
 -> Events / actions
--> State graph
+-> Node graph
 -> Advanced
 ```
 
@@ -88,7 +102,7 @@ Ten sprint powinien zbudować:
 
 ## Czego nie robić teraz
 
-- Full state graph UI.
+- Full node graph UI.
 - Docking jako pierwsza duża funkcja.
 - External graph/docking library jako source of truth.
 - Tauri file system jako wymóg MVP.
@@ -106,7 +120,7 @@ Read:
 3. 01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md
 4. current sprint file
 
-Follow v2.1 rules.
+Follow v2.2 rules.
 Implement only current sprint.
 Do not expand scope.
 Run/build/test if available.
