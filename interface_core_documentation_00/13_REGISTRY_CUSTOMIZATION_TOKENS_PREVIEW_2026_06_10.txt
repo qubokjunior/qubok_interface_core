@@ -1,0 +1,217 @@
+QUBOK_INTERFACE_CORE — REGISTRY, CUSTOMIZATION, TOKENS, PREVIEW
+Wersja: 2026-06-10B
+Status: dopisanie wniosków z rozmów o customizacji, state slots, preview, tokenach, temporary icons i node adapters.
+
+1. CEL
+Dokument porządkuje odpowiedź na pytanie: czy każdy element UI może być customizowany, parametryzowany i wystawiony do state_graph/node_graph.
+Odpowiedź architektoniczna: tak, każdy ważny element powinien mieć opis parametryczny w modelu, ale nie każda funkcja musi być osobnym nodem. System ma być registry-driven, schema-driven i token-driven.
+
+2. GŁÓWNA ZASADA
+Nie projektować jako:
+- każda funkcja = ręczny node;
+- każdy element = osobny custom panel;
+- każdy kolor = lokalny hex;
+- każda ikona = ręcznie przypisany plik;
+- każda lista/panel = ręcznie utworzony zbiór rectangle.
+
+Projektować jako:
+- element -> schema -> properties -> tokens -> states/rules/relations -> preview/debug/export;
+- funkcja -> registry -> command/function/node adapter -> UI representation;
+- kolor/ikona/font -> semantic reference -> resolved asset/value;
+- workspace -> shared kernel -> domain adapter.
+
+3. PODSTAWOWE REJESTRY
+Rejestr | Rola | Przykłady
+---|---|---
+Object Schema Registry | opisuje typy obiektów UI | panel, group, button, slider, node, region, handle, swatch
+Property Registry | katalog edytowalnych properties | color, font_size, radius, padding, visible, color_ref
+Command Registry | katalog kontrolowanych zmian | object.patch, selection.set, layout.split, component.create
+Function Registry | katalog funkcji obliczeniowych | map_range, clamp, sample_color, resample_curve
+Node Adapter Registry | mówi, które funkcje mogą być nodem | display name, sockets, preview, validation
+Theme/Icon/Token Registry | kolory, fonty, spacing, ikony, handles | swatch.main[04], ui.handle.resize_corner
+Preview Registry | wspólny system podglądów | canvas preview, node preview, state preview, timeline preview
+Debug/Event Bus | runtime trace i diagnostyka | command log, event stream, validation issues
+
+4. KLASY PROPERTIES
+Typ property | Przykłady | Edycja | Node
+---|---|---|---
+User-facing property | color, font_size, radius, padding, width, visible | tak | czasem
+Computed property | computed_bbox, resolved_color, effective_state | podgląd/debug | zwykle nie bezpośrednio
+System/internal property | cache_id, measured_text_width, pointer_capture_id | nie albo debug-only | nie
+Token/reference property | color_ref, icon_ref, font_token, spacing_token | tak | tak, jeśli użyteczne
+
+5. PRZYKŁADOWY OBJECT SCHEMA
+Przykład obiektu: panel_search_smart.
+Minimalne sloty:
+- properties;
+- states_slot;
+- rules_slot;
+- relations_slot;
+- preview_adapter;
+- validation_hooks;
+- export_metadata;
+- debug_metadata.
+
+Każdy slot może być początkowo pusty. Ważne jest to, że model danych przewiduje te warstwy od początku, żeby późniejsze dodanie rules, states, relations, preview i graphów nie wymagało przebudowy formatu projektu.
+
+6. STATES SLOT
+Każdy obiekt ma logiczne base/default, ale nie musi fizycznie przechowywać wszystkich możliwych states.
+
+Model:
+object
+- base_properties;
+- states_slot;
+  - default / implicit;
+  - hover / optional;
+  - pressed / optional;
+  - focused / optional;
+  - disabled / optional;
+  - error / optional;
+  - dragging / optional;
+  - dirty / optional;
+- transitions;
+  - default -> hover;
+  - hover -> pressed;
+  - any -> disabled.
+
+Reguła fallback:
+- jeśli stan nie istnieje, użyj default/base;
+- jeśli override property nie istnieje, użyj base value;
+- jeśli kilka stanów jest aktywnych, wygrywa state resolver priority;
+- jeśli transition nie istnieje, zmiana jest instant.
+
+Priority przykładowe:
+disabled > pressed > hover > focused > selected > default.
+
+7. PREVIEW SERVICE
+Preview nie powinno być osobnym wynalazkiem w każdym narzędziu. System powinien mieć wspólny Preview Service.
+
+Flow:
+source data -> preview adapter -> preview cache -> preview target.
+
+Typy preview:
+- canvas preview: miniaturka layoutu/komponentu;
+- node preview: wynik pojedynczego noda lub podgraphu;
+- state preview: default/hover/pressed/error;
+- timeline preview: transition over time, scrubber, frame samples;
+- procedural preview: shape, swatch, array, points;
+- debug preview: bbox, snap, hit regions, guides.
+
+Przykład:
+smart_shape generuje shape_output. Ten sam output może być pokazany jako:
+- miniaturka noda;
+- live preview w inspectorze;
+- canvas object;
+- export preview;
+- state variant preview.
+
+8. COLOR TOKENS I SWATCH PROCEDURAL
+Nie zapisywać wszędzie finalnych kolorów jako hard-coded hex, jeśli kolor może być częścią systemu.
+
+Słabszy model:
+button.background = #3B82F6.
+
+Lepszy model:
+button.background_ref = theme.accent.primary.500;
+resolved_color = #3B82F6;
+fallback_color = #3B82F6.
+
+Dla procedural swatch:
+button.background_ref = swatch.main[04];
+button.hover_ref = swatch.main[05];
+button.error_ref = swatch.status_error[03].
+
+Bezpieczna struktura color_ref:
+- palette_id;
+- group;
+- role;
+- step/index;
+- fallback.
+
+Ważne: sam index jest wygodny, ale ryzykowny. Dlatego index powinien mieć semantic role i fallback.
+
+9. TRANSITION DEVELOPMENTU DLA KOLORÓW
+Etap | Zachowanie
+---|---
+Early MVP | lokalne hex values są dopuszczalne
+Token phase | każdy kolor może mieć color_ref + fallback
+Swatch phase | procedural palette generuje tokeny
+Migration | stare kolory są opakowane jako custom tokens
+Final | elementy używają theme tokens, swatch indexes i semantic aliases
+
+10. TEMPORARY ICONS I PODMIANA
+Temporary icons nie powinny być przypisywane bezpośrednio w wielu miejscach. Potrzebny jest semantic icon registry.
+
+Zamiast:
+resize_handle.icon = temporary_03.
+
+Lepszy model:
+resize_handle.icon_role = ui.handle.resize_corner;
+resolved_icon = temporary_03.
+
+Później mapowanie można zmienić globalnie:
+ui.handle.resize_corner:
+- before: tmp_01;
+- after: icon.resize_corner_v01.
+
+Przykłady:
+Element | Semantic role | Early | Final
+---|---|---|---
+resize corner handle | ui.handle.resize_corner | tmp_01 | icon.resize_corner_v01
+resize edge handle | ui.handle.resize_edge | tmp_02 | icon.resize_edge_v01
+boolean true | ui.bool.true | tmp_03 | check_icon
+boolean false | ui.bool.false | tmp_04 | x_icon
+selection box | ui.overlay.selection_box | procedural rectangle | styled dashed region
+node socket value | node.socket.value | tmp_05 | typed_socket_icon
+warning | ui.status.warning | tmp_06 | warning_triangle
+
+11. PROCEDURAL HANDLE STYLE
+Nie wszystko jest ikoną. Resize handles, selection box i bbox overlays mogą być proceduralnymi primitives.
+
+handle_style.resize_corner:
+- shape: square / circle / bracket / dot;
+- size: 8 px;
+- stroke: token.accent.selection;
+- fill: token.surface;
+- hover_scale: 1.15.
+
+12. FUNCTION REGISTRY + NODE ADAPTER
+Funkcje nie powinny być czytane przez graph bezpośrednio z przypadkowych nazw kodu. Potrzebny jest pośrednik.
+
+Flow:
+real function -> FunctionDefinition -> optional NodeAdapter -> Graph Palette -> Node Instance.
+
+FunctionDefinition powinien zawierać:
+- id, np. math.map_range;
+- display_name, np. Map Range;
+- short_label, np. map;
+- category;
+- description;
+- inputs;
+- outputs;
+- node_color;
+- tags;
+- safe_for_graph;
+- preview_adapter;
+- command_adapter.
+
+Nazwy:
+- stable id: math.map_range, nigdy nie zmieniać, używane w zapisie;
+- display name: Map Range, nazwa w palette;
+- instance label: slider -> panel width, nazwa konkretnego noda;
+- custom alias: Remap Width, nazwa nadana przez użytkownika.
+
+13. CZEGO NIE WYSTAWIAĆ JAKO NODE
+Nie wystawiać bezpośrednio:
+- destructive filesystem operations;
+- mutacji modelu omijających command layer;
+- render internals;
+- cache/memory internals;
+- raw pointer event spam;
+- ciężkich async/network operations;
+- destructive commands bez guardów.
+
+Graph powinien emitować: value, shape, color, target, command, asset, validation_result, signal.
+
+14. WNIOSEK
+Każdy ważny element systemu powinien być referowalny i opisywalny przez registry, ale tylko część elementów jest widoczna jako node, widget, preview albo command. To pozwala zaczynać prosto i później bezpiecznie dokładać swatch_color_procedural, temporary icon replacement, state_graph, smart_shape i previews.
