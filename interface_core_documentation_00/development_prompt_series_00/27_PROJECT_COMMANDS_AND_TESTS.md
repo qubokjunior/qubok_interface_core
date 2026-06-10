@@ -1,7 +1,7 @@
 # 27 — Project commands and tests guide
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: codex_commands_tests
 last_updated: 2026-06-10
 
@@ -9,9 +9,22 @@ last_updated: 2026-06-10
 
 Ten dokument ma ograniczyć zgadywanie komend przez Codex. Zawiera bezpieczną procedurę wykrywania lokalizacji projektu i uruchamiania build/test/typecheck tylko tam, gdzie istnieje `package.json`.
 
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
+
 ## Ważna uwaga
 
 W momencie tworzenia tego dokumentu `package.json` nie został znaleziony w root repo przez GitHub fetch/search. Dlatego Codex nie powinien zakładać, że root repo jest katalogiem aplikacji Node/Vite. Najpierw należy znaleźć właściwy katalog projektu.
+
+Preferowana lokalna ścieżka robocza użytkownika:
+
+```text
+I:\Art\_AI\app_development\qubok_interface_core
+```
 
 ## Project root discovery
 
@@ -49,8 +62,6 @@ Nie zgaduj komend testowych, jeśli nie ma ich w scripts.
 
 ## Standard command order
 
-Jeżeli scripts istnieją, używaj tej kolejności:
-
 | Step | Command | Required? | Notes |
 |---:|---|---|---|
 | 1 | package manager install command | only if dependencies missing | prefer existing lockfile |
@@ -60,21 +71,7 @@ Jeżeli scripts istnieją, używaj tej kolejności:
 | 5 | `npm run lint` | if script exists | do not add lint fixes outside scope |
 | 6 | manual smoke test | if user can run app | describe exactly what to check |
 
-## Package manager detection
-
-Use existing lockfile:
-
-| Lockfile | Package manager |
-|---|---|
-| `package-lock.json` | npm |
-| `pnpm-lock.yaml` | pnpm |
-| `yarn.lock` | yarn |
-
-If there is no lockfile, prefer npm unless project docs say otherwise.
-
 ## Build acceptance template
-
-For every implementation sprint, Codex should report:
 
 ```text
 Build / test
@@ -109,8 +106,8 @@ Build / test
 | Component library | save/insert component creates fresh valid IDs |
 | Layout/panel builder | snap/align/distribute affects selected objects through commands |
 | Docking shell | split/merge/resize app panels without changing InterfaceObject transforms |
-| Events/actions | event assignment can output command without visual state graph |
-| State graph | graph viewport pan/zoom/selection works; graph outputs commands |
+| Events/actions | event assignment can output command without visual node graph |
+| Node graph | node graph viewport pan/zoom/selection works; node graph outputs commands |
 | Advanced | feature is gated by maturity and hidden unless L3/L4 |
 
 ## Repair command rule
