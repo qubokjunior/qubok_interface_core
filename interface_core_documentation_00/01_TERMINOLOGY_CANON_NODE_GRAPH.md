@@ -3,61 +3,46 @@
 Version: 2026-06-11
 Status: canonical terminology decision
 
-## Final decision
+## Decision
 
-`node_graph` is the final canonical term for the graph system.
+`node_graph` is the canonical term for the graph system.
 
-Use `node_graph` for:
+Use it for: visual graph editor, runtime, viewport, nodes, profiles, output contracts, workspace, palette and node adapters.
 
-- visual graph editor,
-- graph runtime,
-- graph viewport,
-- graph nodes,
-- graph profiles,
-- graph output contracts,
-- graph workspace,
-- graph palette and node adapters.
+## Naming table
 
-## Deprecated names
-
-| Deprecated | Replacement |
+| Legacy/deprecated | Canonical |
 |---|---|
 | `state_graph` | `node_graph` |
 | `state graph` | `node_graph` |
-| `StateGraph` as new class/system name | `NodeGraph` |
-| `stateGraph` as new variable/module name | `nodeGraph` |
+| `StateGraph` as new public class/system name | `NodeGraph` |
+| `stateGraph` as new public variable/module name | `nodeGraph` |
 
-Older documents may still contain `state_graph`. Treat this as a legacy alias for `node_graph` unless the text clearly talks about visual states such as hover, pressed or disabled.
+Older documents may still contain legacy wording. Read it as `node_graph` unless it clearly describes visual/interactivity states.
 
-## What remains valid
+## Valid `state` usage
 
-The word `state` remains valid for object/component states:
+`state` remains valid for component/object variants:
 
-- `states_slot`,
-- `state_variant`,
-- `state_transition`,
-- `state_resolver`,
-- `hover_state`,
-- `pressed_state`,
-- `disabled_state`,
-- `dirty_state`,
-- `state_change` output.
+| Valid examples | Meaning |
+|---|---|
+| `states_slot`, `state_variant`, `state_transition`, `state_resolver` | state system data |
+| `hover_state`, `pressed_state`, `disabled_state`, `dirty_state` | interaction/visual states |
+| `state_change` | valid graph output type |
 
-A button has states. A graph system is `node_graph`.
+A button has states. The graph system is `node_graph`.
 
 ## Concept split
 
 | Concept | Meaning |
 |---|---|
-| `state` | visual/interactivity/runtime variant of an object or component |
-| `transition` | interpolation or timing between states |
-| `node_graph` | graph editor and graph runtime system |
-| `node_graph profile` | filtered graph mode for a domain |
-| `node_graph output` | required emitted result of the graph |
+| `state` | visual/interactivity/runtime variant of an object/component |
+| `transition` | interpolation/timing between states |
+| `node_graph` | graph editor + graph runtime |
+| `node_graph profile` | domain-specific graph mode |
+| `node_graph output` | required emitted result |
 
-## Node graph profiles
-
-The graph editor is one system with multiple profiles.
+## Profiles and outputs
 
 | Profile | Purpose | Required output |
 |---|---|---|
@@ -67,62 +52,32 @@ The graph editor is one system with multiple profiles.
 | `animation` | time-based values and transitions | `timeline_value` or `transition_result` |
 | `object_create` | procedural object creation | `object_create_command` |
 | `shape` | procedural shape generation | `shape_output` |
-| `signal` | pulse, realtime or simulation-like signal | `signal_output` |
+| `signal` | pulse/realtime/simulation signal | `signal_output` |
 | `debug` | diagnostics and checks | `validation_result` |
 
-## Output contract rule
-
-Every node graph must have a visible named output. If no output exists, the graph is invalid.
-
-Valid output classes:
-
-- `command`,
-- `state_change`,
-- `property_override`,
-- `value_change`,
-- `shape_output`,
-- `asset`,
-- `target`,
-- `validation_result`,
-- `signal_output`.
+Every `node_graph` must have a visible named output. If no output exists, the graph is invalid.
 
 ## Visual standard
 
-Every node graph view should use:
+A `node_graph` view should use:
 
-- input sockets on the left,
-- output sockets on the right,
+- left input sockets, right output sockets,
 - named and typed sockets,
 - selected outline for active node,
-- orthogonal routing,
-- reroute points,
-- wire lanes,
+- orthogonal routing, reroute points and wire lanes,
 - left-to-right flow,
 - no wires through node body, labels or socket rows,
 - visible output node or output panel.
 
-## Migration rule
-
-Legacy wording should be read as:
-
-| Legacy wording | Canonical reading |
-|---|---|
-| `state_graph system` | `node_graph system` |
-| `state_graph workspace` | `node_graph workspace` |
-| `state_graph viewport` | `node_graph viewport` |
-| `state_graph emits commands` | `node_graph emits commands` |
-
-State-related terms remain unchanged when they describe component states.
-
-## Recommended new file/module names
+## Recommended new code names
 
 Prefer:
 
-- `src/core/nodeGraph/`,
-- `NodeGraphWorkspace.tsx`,
-- `nodeGraphTypes.ts`,
-- `nodeGraphProfileTypes.ts`,
-- `nodeGraphOutputContracts.ts`,
-- `nodeAdapterRegistry.ts`.
+- `src/core/nodeGraph/`
+- `NodeGraphWorkspace.tsx`
+- `nodeGraphTypes.ts`
+- `nodeGraphProfileTypes.ts`
+- `nodeGraphOutputContracts.ts`
+- `nodeAdapterRegistry.ts`
 
-Avoid creating new public APIs using the old `stateGraph` naming.
+Do not create new public APIs using old `stateGraph` naming. Migrate legacy code only in a dedicated cleanup sprint.
