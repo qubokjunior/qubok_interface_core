@@ -1,0 +1,296 @@
+QUBOK_INTERFACE_CORE — RULES, STATES, RELATIONS, PROCEDURAL UI
+Wersja: 2026-06-10
+Status: nowy dokument aktualizujący zakres funkcjonalny po rozmowach i grafikach z ostatnich ok. 2 dni.
+
+1. CEL
+Ten dokument opisuje nowe i doprecyzowane mechaniki, które pojawiły się w rozmowach: rules, states, responsiveness, value relations, relation graph, shape through state_graph, instance on points oraz array. Te mechaniki przesuwają qubok_interface_core z prostego edytora paneli w stronę parametrycznego interface engine.
+
+2. RULES ENGINE
+Rules engine odpowiada za warunkową zmianę właściwości elementów UI.
+
+Przykładowe zastosowania:
+- visibility: ukryj lub pokaż obiekt zależnie od user role, query length, active mode;
+- enabled: blokuj kontrolkę, jeśli app.read_only lub record.state == locked;
+- color_style: zmień styl, kiedy search match score przekroczy próg;
+- min_width / max_width: wymuś rozmiary przy viewport threshold;
+- placeholder_text: podmień tekst hint, gdy query jest puste;
+- permissions override: nadpisz enabled/visible, jeśli user nie ma uprawnień.
+
+Minimalny model rule:
+- id;
+- name;
+- condition expression;
+- priority;
+- target object/path;
+- target property;
+- result value;
+- active flag;
+- last evaluation state: true/false/skipped/error;
+- conflict handling: priority, override, lock, disabled.
+
+Runtime panels dla rules:
+- Rule Evaluation Log;
+- Matched Conditions;
+- Recent Command / State Log;
+- Rule Inspector;
+- Conflict / Override Report.
+
+Ważne: rules nie są posterem ani opisem. W UI powinny wyglądać jak realny edytor z polami warunków, priorytetami, aktywnymi przełącznikami i logiem ostatniego evaluation.
+
+3. STATES + STYLE TRANSITIONS
+States opisują warianty wizualne i interakcyjne komponentu w czasie.
+
+Podstawowe stany:
+- normal;
+- hover;
+- pressed;
+- focused;
+- disabled;
+- error;
+- selected;
+- dragging;
+- dirty;
+- valid / invalid.
+
+State properties:
+- fill;
+- stroke;
+- opacity;
+- radius;
+- scale;
+- shadow amount;
+- text color;
+- border width;
+- cursor;
+- z depth;
+- interaction lock.
+
+Transition properties:
+- duration;
+- easing;
+- delay;
+- interpolation;
+- from state;
+- to state;
+- inherited defaults;
+- per-property override.
+
+Runtime panels dla states:
+- State Properties;
+- Transition Timeline;
+- Keyframes;
+- State Playback Log;
+- Live Preview Controls.
+
+Wizualizacje states powinny pokazywać aktywny moment: np. hover preview running, playhead na timeline, interpolowane wartości, aktualny state i poprzedni/następny state.
+
+4. RESPONSIVENESS ENGINE
+Responsiveness opisuje zachowanie interface zależnie od szerokości, breakpointów i container queries.
+
+Breakpointy:
+- desktop/lg;
+- tablet/md;
+- mobile/sm;
+- custom/xs.
+
+Parametry responsive:
+- min width;
+- max width;
+- flex grow;
+- flex shrink;
+- basis;
+- wrap rules;
+- stack direction;
+- visibility per breakpoint;
+- overflow handling;
+- container query mode;
+- reflow strategy.
+
+Runtime panels:
+- Breakpoint List;
+- Responsive Validation;
+- Layout Resize Trace;
+- Visibility per Breakpoint;
+- Preferred Sizing.
+
+Wizualny standard: najlepiej pokazywać desktop/tablet/mobile jako równoległe preview, ale ograniczać ilość tekstu w samych preview. Dane szczegółowe mają być w inspectorze i bottom shelf.
+
+5. VALUE RELATIONS / DRIVERS
+Value relations pozwalają przypisywać wartości między elementami jak w modelu driverów znanym z Blender-like workflows. Jedna wartość może sterować wieloma parametrami.
+
+Przykład:
+master_slider.value = 0.62 steruje:
+- demo_panel.panel_background.width_percent = 62%;
+- demo_panel.action_button.opacity = 62%;
+- demo_panel.progress_bar.fill_percent = 62%;
+- demo_panel.status_label.text = Value: 0.62.
+
+Minimalny model relation:
+- source object;
+- source property path;
+- variables;
+- expression;
+- mapping min/max;
+- easing/mapping curve;
+- clamp output;
+- target list;
+- update mode;
+- evaluation status.
+
+Runtime panels:
+- Dependency Trace;
+- Evaluated Expressions;
+- Changed Target Values;
+- Relation Inspector;
+- Conflict/Manual Override panel.
+
+Ważne: relation lines na canvasie powinny być dashed/clean, nie dominować całego UI. Główne dane zależności powinny być w panelach.
+
+6. RELATION GRAPH
+Relation graph jest wizualnym odpowiednikiem bardziej złożonych value relations.
+
+Typowe nody:
+- source_value;
+- map_range;
+- clamp;
+- combine;
+- lerp;
+- round;
+- switch;
+- min/max;
+- target property.
+
+Standard graphu:
+- orthogonal wires;
+- reroute points;
+- brak spaghetti;
+- output targets po prawej;
+- selected node inspector po prawej;
+- evaluation result na dole;
+- expression warnings jako realny panel, nie dekoracja.
+
+Przykładowe output targets:
+- panel_width;
+- search_box_width;
+- opacity;
+- spacing;
+- radius;
+- layout gap.
+
+7. SHAPE THROUGH STATE_GRAPH
+Shape graph tworzy kształty UI proceduralnie. Może działać samodzielnie albo jako część state_graph, gdy stan wybiera wariant shape.
+
+Przykładowe nody:
+- rectangle_base;
+- inset;
+- corner_radius;
+- tabs;
+- boolean_cut;
+- style_tokens;
+- spacing;
+- text_label;
+- icon_slot;
+- output_shape.
+
+Wynik graphu:
+- shape path;
+- style tokens;
+- layout bounds;
+- interaction region;
+- preview mesh/path;
+- exportable SVG visual albo JSON runtime shape description.
+
+Konieczne doprecyzowanie: jeśli używamy nazwy state_graph, ekran powinien pokazywać state/context/event wpływający na kształt, np. active_state = compact, focused, search_open, disabled.
+
+8. INSTANCE ON POINTS
+Instance on points powtarza komponenty lub primitives na źródłach punktów.
+
+Źródła punktów:
+- grid_nxm;
+- line_n;
+- circle_n;
+- spiral_n;
+- curve_wave;
+- custom_points_set;
+- imported point cloud;
+- sampled bounds.
+
+Parametry instancera:
+- source object;
+- points source;
+- count;
+- pick mode;
+- scale;
+- rotation;
+- align to normal;
+- spacing;
+- offset;
+- random scale;
+- random rotation;
+- seed;
+- culling;
+- batch group.
+
+Runtime panels:
+- Point Summary;
+- Instance Summary;
+- Distribution Trace;
+- Validation;
+- Issues.
+
+Ważna reguła spójności: grid_10x6 oznacza 60 punktów, nie 120. Jeśli ma być 120 punktów, nazwa powinna być grid_10x12 albo grid_12x10.
+
+9. ARRAY TOOL
+Array jest bardziej kontrolowanym modifierem powtarzania elementów.
+
+Parametry:
+- source object;
+- array direction;
+- count X;
+- count Y;
+- spacing X;
+- spacing Y;
+- fit to bounds;
+- padding;
+- alignment;
+- stagger;
+- alternate rows;
+- randomize offset;
+- transform inheritance;
+- generated instance naming.
+
+Runtime panels:
+- Array Diagnostics;
+- Generated Count Summary;
+- Modifier / Update Log;
+- Output Statistics.
+
+Array powinien pokazywać aktywną edycję: selected bounds, spacing guides, width/height labels, handles, ghost preview zmiany count/spacing, update log.
+
+10. POWIĄZANIE WARSTW
+Mechanika | Dane wejściowe | Runtime output
+---|---|---
+Rules | condition + context | property override / state change
+States | interaction state | style values over time
+Responsiveness | viewport/container width | layout variant / visibility / sizing
+Value relations | source property | mapped target values
+Relation graph | variables + functions | computed UI parameters
+Shape graph | shape nodes + state/context | generated shape
+Instance on points | source object + point source | repeated instances
+Array | seed component + count/spacing | array instances
+
+11. PRIORYTET IMPLEMENTACYJNY DLA MVP
+Najbardziej wartościowa kolejność rozszerzania po core UI:
+1. Source of truth model + commands + validation.
+2. Hierarchy/Inspector/Selection sync.
+3. Rules engine jako property override layer.
+4. States + hover/pressed/focused/disabled style variants.
+5. Value relations for simple driver-style links.
+6. Responsiveness constraints.
+7. Array modifier.
+8. Instance on points.
+9. Relation graph.
+10. Shape through state_graph.
+
+12. KLUCZOWY WNIOSEK
+qubok_interface_core powinien być projektowany jako parametryczny interface engine: obiekty UI nie tylko mają style i layout, ale także rules, states, drivers, responsive constraints, graph-generated shape i proceduralne multiplikatory.
