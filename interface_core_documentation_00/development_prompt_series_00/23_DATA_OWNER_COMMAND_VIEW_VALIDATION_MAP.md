@@ -1,13 +1,20 @@
 # 23 — Data owner / command / view / validation map
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: canonical_matrix
 last_updated: 2026-06-10
 
 ## Cel
 
 Ten dokument mapuje funkcje na właściciela danych, komendy, widoki i walidację. Używać przy pisaniu promptów, żeby każdy sprint jasno odpowiadał: kto posiada dane, kto je zmienia, kto je pokazuje i kto je waliduje.
+
+## Naming v2.2
+
+- Project: `qubok_interface_core` / `interface_core`.
+- Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
+- Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
+- Stare nazewnictwo `state_graph` jest superseded.
 
 ## Główna zasada
 
@@ -45,8 +52,8 @@ View local state -> direct mutation -> partial Project update
 | Event assignment | Project.event_assignments | event.assign, event.unassign, event.patch | getEventsForObject, getEventAssignments | LogicDebugPanel, EventsInspector | validateEventAssignments |
 | Action registry | core/events registry | action.register only if dynamic; usually static | getActionRegistry | LogicDebugPanel | validateActionRegistry |
 | Target resolver | core/events resolver | no direct persistent command | resolveTarget | LogicDebugPanel, Graph preview | validateTargetRule |
-| State graph model | Project.state_graphs | graph.create, graph.patch, graph.delete, graph.node.patch, graph.edge.patch | getGraphById, getGraphNodes | StateGraphWorkspace | validateGraph |
-| Graph viewport | StateGraph.viewport | graph.viewport.pan, graph.viewport.zoom | getGraphViewport | StateGraphWorkspace | validateGraphViewport |
+| Node graph model | Project.node_graphs | nodeGraph.create, nodeGraph.patch, nodeGraph.delete, nodeGraph.node.patch, nodeGraph.edge.patch | getNodeGraphById, getNodeGraphNodes | NodeGraphWorkspace | validateNodeGraph |
+| Node graph viewport | NodeGraph.viewport | nodeGraph.viewport.pan, nodeGraph.viewport.zoom | getNodeGraphViewport | NodeGraphWorkspace | validateNodeGraphViewport |
 
 ## Przykład: region_rectangle
 
@@ -87,15 +94,15 @@ Export: workspace preset optional, not Component JSON
 Maturity: L3/L4
 ```
 
-## Przykład: state graph node move
+## Przykład: node graph node move
 
 ```text
-Feature: state graph node move
-Data owner: Project.state_graphs[graph_id].nodes_by_id[node_id].position
-Commands: graph.node.patch or graph.node.move
-Selectors: getGraphById, getGraphNodeById
-View: StateGraphWorkspace, graph adapter view
-Validation: validateGraph, validateGraphNodePosition
+Feature: node graph node move
+Data owner: Project.node_graphs[graph_id].nodes_by_id[node_id].position
+Commands: nodeGraph.node.patch or nodeGraph.node.move
+Selectors: getNodeGraphById, getNodeGraphNodeById
+View: NodeGraphWorkspace, graph adapter view
+Validation: validateNodeGraph, validateNodeGraphNodePosition
 Export: Project JSON yes
 Maturity: L2/L3 first
 ```
