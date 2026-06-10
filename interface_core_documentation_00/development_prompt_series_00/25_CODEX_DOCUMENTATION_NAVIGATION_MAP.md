@@ -1,7 +1,7 @@
 # 25 — Codex documentation navigation map
 
 status: active
-version: v2.1
+version: v2.2
 doc_type: codex_navigation_map
 last_updated: 2026-06-10
 
@@ -10,6 +10,17 @@ last_updated: 2026-06-10
 Ten plik jest mapą poruszania się po dokumentacji `qubok_interface_core` dla Codex / AI. Ma ograniczyć zużycie tokenów i zapobiec sytuacji, w której Codex czyta wszystkie dokumenty, zamiast dobrać minimalny zestaw właściwy dla danego zadania.
 
 Jeżeli masz wskazać Codexowi jeden plik nawigacyjny, wskaż ten plik.
+
+## Nazewnictwo v2.2
+
+| Obszar | Obowiązująca nazwa |
+|---|---|
+| Project | `qubok_interface_core` |
+| Short name | `interface_core` |
+| Local PC path | `I:\Art\_AI\app_development\qubok_interface_core` |
+| Graph system | `node_graph`, `nodeGraph`, `NodeGraph`, `node graph` |
+
+Nie używać nowych referencji do `state_graph`, `stateGraph`, `StateGraph`, „state graph”, `interface_core_00` ani `qubok_interface_core_00`.
 
 ## Najkrótsza instrukcja dla Codex
 
@@ -29,15 +40,14 @@ Implement only the selected sprint/task.
 | Item | Value |
 |---|---|
 | Repository | `qubokjunior/qubok_interface_core` |
+| Local PC path | `I:\Art\_AI\app_development\qubok_interface_core` |
 | Documentation root | `interface_core_documentation_00/development_prompt_series_00/` |
-| Current documentation version | v2.1 |
+| Current documentation version | v2.2 |
 | Main source of truth | `00_CURRENT_SOURCE_OF_TRUTH.md` |
 | Current near-term development target | `04_SPRINT_02_CORE_MODEL_COMMANDS_VALIDATION_PROMPT.md` |
 | Roadmap acceptance map | `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` |
 
 ## Global conflict priority
-
-If documents conflict, use this order:
 
 1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
 2. `00_CURRENT_SOURCE_OF_TRUTH.md`
@@ -52,8 +62,6 @@ If documents conflict, use this order:
 
 ## Core invariants to keep in memory
 
-These rules apply to every route:
-
 1. Project JSON / Project model is source of truth.
 2. `src/core` must not import React or `creator`.
 3. `creator` may import `core`, not reverse.
@@ -64,15 +72,13 @@ These rules apply to every route:
 8. `visual_bbox`, `layout_bbox` and `interaction_region` are separate.
 9. Rectangle renders; Region interacts.
 10. Render adapter separates Project from SVG/HTML renderer.
-11. Event/action registry is headless and separate from visual state graph.
+11. Event/action registry is headless and separate from visual node graph.
 12. External libraries are adapters, not source of truth.
 13. Default UI exposes only L3/L4 features.
 14. Debug, graph, docking and experimental systems must not dominate the default screen.
 15. Panel_Monitor sample must be Project data, not JSX mockup.
 
 ## Route selector
-
-Choose one route only.
 
 | Task type | Route | Read these files |
 |---|---|---|
@@ -88,7 +94,7 @@ Choose one route only.
 | Work on layout/snap/panel builder | Route J | 25, 00, 01, 09, 22, 23, 24, 27, 28, 29 |
 | Work on docking shell | Route K | 25, 00, 01, 10, 17, 22, 23, 24, 27, 28, 29 |
 | Work on events/actions/target resolver | Route L | 25, 00, 01, 11, 18, 22, 23, 24, 27, 28, 29 |
-| Work on state graph workspace | Route M | 25, 00, 01, 12, 17, 18, 22, 23, 24, 27, 28, 29 |
+| Work on node graph workspace | Route M | 25, 00, 01, 12, 17, 18, 22, 23, 24, 27, 28, 29 |
 | Work on advanced/post-MVP feature | Route N | 25, 00, 01, 13, 17, 22, 23, 24, 27, 28, 29 |
 | Update documentation itself | Route O | 25, 00, 19, 20, 21, 28, affected docs |
 | Clarify terminology/naming | Route P | 25, 00, 23, 24 |
@@ -103,20 +109,20 @@ Choose one route only.
 | 02 | `02_SPRINT_00_FOUNDATION_AUDIT_PROMPT.md` | foundation audit | first project audit only |
 | 03 | `03_SPRINT_01_SCAFFOLD_CONCEPT_SHELL_PROMPT.md` | shell/tokens | scaffold or UI shell sprint |
 | 04 | `04_SPRINT_02_CORE_MODEL_COMMANDS_VALIDATION_PROMPT.md` | core/model/commands/history/selectors/tests | current near-term priority |
-| 05 | `05_SPRINT_03_CANVAS_PRIMITIVES_SELECTION_PROMPT.md` | canvas/primitives/selection/transform | after Sprint 02 v2.1 done |
+| 05 | `05_SPRINT_03_CANVAS_PRIMITIVES_SELECTION_PROMPT.md` | canvas/primitives/selection/transform | after Sprint 02 done |
 | 06 | `06_SPRINT_04_INSPECTOR_HIERARCHY_REGION_DEBUG_PROMPT.md` | inspector/hierarchy/region debug | after canvas/selection stable |
 | 07 | `07_SPRINT_05_COMPONENT_PROOF_SAVE_EXPORT_PROMPT.md` | Panel_Monitor/save/export | component proof/export sprint |
 | 08 | `08_SPRINT_06_DEFAULT_UI_CLEANUP_COMPONENT_LIBRARY_PROMPT.md` | UI cleanup/component library | after component proof |
 | 09 | `09_SPRINT_07_LAYOUT_PANEL_BUILDER_PROMPT.md` | layout/snap/panel builder | after component library base |
 | 10 | `10_SPRINT_08_DOCKING_SHELL_PROMPT.md` | app shell docking | after core creator workflow stable |
-| 11 | `11_SPRINT_09_EVENTS_ACTION_REGISTRY_PROMPT.md` | events/actions/target resolver | before state graph |
-| 12 | `12_SPRINT_10_STATE_GRAPH_WORKSPACE_PROMPT.md` | state graph workspace | after events/actions |
+| 11 | `11_SPRINT_09_EVENTS_ACTION_REGISTRY_PROMPT.md` | events/actions/target resolver | before node graph |
+| 12 | `12_SPRINT_10_NODE_GRAPH_WORKSPACE_PROMPT.md` | node graph workspace | after events/actions |
 | 13 | `13_SPRINT_11_ADVANCED_POST_MVP_PROMPT.md` | advanced features | post-MVP only |
 | 14 | `14_NEXT_CHAT_STARTER_TEMPLATE.md` | new chat starter | when starting a fresh chat manually |
 | 15 | `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` | architecture rationale | architecture diagnosis |
 | 16 | `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` | revised technical roadmap | planning/roadmap decisions |
 | 17 | `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | library adapter policy | any external library decision |
-| 18 | `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` | v2.1 corrections for older prompts | when using old sprint prompts |
+| 18 | `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` | v2.2 corrections for older prompts | when using old sprint prompts |
 | 19 | `19_DOC_STATUS_AND_ARCHIVE_INDEX.md` | doc status/archive policy | docs maintenance |
 | 20 | `20_AI_CONTEXT_MINIMAL.md` | ultra-short AI context | when token budget is very low |
 | 21 | `21_DOCUMENTATION_HEALTH_CHECKLIST.md` | docs quality checklist | docs update/review |
@@ -143,7 +149,7 @@ Choose one route only.
 | Layout / snap / panel builder | 09 | 00, 01, 22, 23, 24, 27, 28, 29 | Layout gate, Region/performance gate |
 | Docking shell | 10 | 00, 01, 17, 22, 23, 24, 27, 28, 29 | Docking gate, External adapter gate |
 | Events / actions | 11 | 00, 01, 18, 22, 23, 24, 27, 28, 29 | Logic gate |
-| State graph | 12 | 00, 01, 17, 18, 22, 23, 24, 27, 28, 29 | Graph gate, External adapter gate |
+| Node graph | 12 | 00, 01, 17, 18, 22, 23, 24, 27, 28, 29 | Graph gate, External adapter gate |
 | Advanced | 13 | 00, 01, 17, 22, 23, 24, 27, 28, 29 | Advanced gate |
 
 ## Navigation by question
@@ -167,8 +173,6 @@ Choose one route only.
 ## Token budget modes
 
 ### Minimal mode
-
-Use when task is simple or context is expensive:
 
 ```text
 Read only:
@@ -204,17 +208,6 @@ Read:
 - 29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md
 ```
 
-### External library mode
-
-```text
-Read:
-- 25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md
-- 00_CURRENT_SOURCE_OF_TRUTH.md
-- 17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md
-- 28_CODEX_PATCH_POLICY.md
-- related sprint file
-```
-
 ### Repair mode
 
 ```text
@@ -228,35 +221,12 @@ Read:
 - failing log/code context only
 ```
 
-### Documentation maintenance mode
-
-```text
-Read:
-- 25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md
-- 00_CURRENT_SOURCE_OF_TRUTH.md
-- 19_DOC_STATUS_AND_ARCHIVE_INDEX.md
-- 21_DOCUMENTATION_HEALTH_CHECKLIST.md
-- 28_CODEX_PATCH_POLICY.md
-- affected docs only
-```
-
 ## Current next-step pointer
 
-As of v2.1 documentation state, the recommended next development target is:
+Recommended next development target:
 
 ```text
 Route E — core/model/commands/history/selectors
-Read:
-- 25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md
-- 00_CURRENT_SOURCE_OF_TRUTH.md
-- 01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md
-- 04_SPRINT_02_CORE_MODEL_COMMANDS_VALIDATION_PROMPT.md
-- 22_FEATURE_DEPENDENCY_MATRIX.md
-- 23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md
-- 24_CANONICAL_GLOSSARY.md
-- 27_PROJECT_COMMANDS_AND_TESTS.md
-- 28_CODEX_PATCH_POLICY.md
-- 29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md
 ```
 
 Expected implementation area:
@@ -273,7 +243,7 @@ tests/core/**
 Do not start with:
 
 ```text
-state graph UI
+node graph UI
 docking shell
 external graph/docking library
 Tauri file system
@@ -281,51 +251,6 @@ procedural icons
 bitmap/GPU graph
 linked component instances
 ```
-
-## Required Codex response format
-
-For implementation tasks, Codex should answer with:
-
-```text
-Co zrobiono
-- ...
-
-Zmienione pliki
-- ...
-
-Jak testować
-1. ...
-
-Kryteria done
-- ...
-
-Czego celowo nie ruszałem
-- ...
-
-Ryzyka / pending
-- ...
-```
-
-For completed roadmap stages, use `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` and include:
-
-```text
-Roadmap stage completed
-- [stage]
-
-Implemented
-- ...
-
-Related modules
-- ...
-
-Enabled next
-- ...
-
-Tests / acceptance
-- ...
-```
-
-For failed sprint/build/test, use `26_CODEX_REPAIR_PLAYBOOK.md`.
 
 ## Docs maintenance rule
 
