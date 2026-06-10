@@ -7,7 +7,7 @@ last_updated: 2026-06-10
 
 Cel pakietu: seria dokumentów do prowadzenia developmentu `qubok_interface_core` prompt po promptcie, z założeniem że poprzedni prompt zakończył się sukcesem: build przechodzi, testy manualne przeszły, a scope nie rozlał się poza fazę.
 
-Ten pakiet jest jednocześnie warstwą wykonawczą i aktualnym indeksem dokumentacji. Główny canonical entry point to `00_CURRENT_SOURCE_OF_TRUTH.md`.
+Ten pakiet jest jednocześnie warstwą wykonawczą i aktualnym indeksem dokumentacji. Dla Codex pierwszym plikiem nawigacyjnym jest `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`. Główny canonical entry point z regułami projektu to `00_CURRENT_SOURCE_OF_TRUTH.md`.
 
 ## Status po aktualizacji v2.1
 
@@ -50,9 +50,10 @@ Weryfikacja techniczna i rozwój dokumentacji nie zmieniają głównego kierunku
 
 Przy implementacji jednego sprintu wystarczy zwykle:
 
-1. `00_CURRENT_SOURCE_OF_TRUTH.md`
-2. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
-3. aktualny plik sprintu
+1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
+2. `00_CURRENT_SOURCE_OF_TRUTH.md`
+3. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
+4. aktualny plik sprintu
 
 Przy diagnozie architektury dodatkowo czytać:
 
@@ -84,7 +85,7 @@ Przy diagnozie architektury dodatkowo czytać:
 | `00_CURRENT_SOURCE_OF_TRUTH.md` | główny entry point i priority rules |
 | `15_ARCHITECTURE_UPDATE_V2_1_IMPLEMENTATION_DIAGNOSIS.md` | diagnoza i uzasadnienie zmian v2.1 |
 | `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md` | aktualna roadmapa techniczna |
-| `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | zasady bibliotek zewnętrznych jako adapterów |
+| `17_EXTERNAL_ADAPTER_POLICY_AND_LIBRARY_DECISIONS.md` | zasady użycia bibliotek zewnętrznych jako adapterów |
 | `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md` | korekta starszych promptów |
 | `19_DOC_STATUS_AND_ARCHIVE_INDEX.md` | status dokumentów i reguły archiwizacji |
 | `20_AI_CONTEXT_MINIMAL.md` | najkrótszy kontekst dla AI/Codex |
@@ -92,6 +93,7 @@ Przy diagnozie architektury dodatkowo czytać:
 | `22_FEATURE_DEPENDENCY_MATRIX.md` | zależności funkcjonalności |
 | `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md` | mapa owner -> command -> view -> validation |
 | `24_CANONICAL_GLOSSARY.md` | słownik pojęć |
+| `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` | główna mapa poruszania się po dokumentacji dla Codex |
 
 ## Reguła pracy
 
@@ -105,8 +107,9 @@ Pierwotny plan był poprawny funkcjonalnie. Aktualizacja v2.1 wzmacnia go techni
 
 Jeżeli dokumenty mówią co innego, priorytet ma:
 
-1. `00_CURRENT_SOURCE_OF_TRUTH.md`
-2. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
-3. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
-4. aktualny sprint file
-5. starsze notatki i reference files
+1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` dla wyboru, które pliki czytać.
+2. `00_CURRENT_SOURCE_OF_TRUTH.md` dla aktualnych reguł canonical.
+3. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`.
+4. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`.
+5. aktualny sprint file.
+6. starsze notatki i reference files.
