@@ -1,7 +1,7 @@
 # QUBOK_INTERFACE_CORE — ROADMAP PHASE TO SCREEN STATE MAP
 
-Version: 2026-06-11
-Status: canonical roadmap clarification
+Version: 2026-06-11B
+Status: canonical roadmap clarification + current stabilization map
 
 ## Purpose
 
@@ -85,6 +85,59 @@ Do not implement full node_graph editor yet.
 
 ## Current priority order
 
+Canonical long-term order:
+
 ```text
 source-of-truth model -> command layer -> canvas/hierarchy/inspector sync -> bbox/regions -> component proof -> save/export -> default UI cleanup -> component library -> panel builder -> app shell docking -> headless events/rules/references -> node_graph workspace -> advanced procedural systems
 ```
+
+Current local implementation state requires a stabilization bridge before continuing advanced phases:
+
+```text
+0 Safety baseline -> 1 Selection Operation Target Contract -> 2 InteractionSession -> 3 Canvas Instance Guardrail -> 4 Document/Session/View split audit -> 5 Core browser boundary audit -> 6 Default UI visibility cleanup -> 7 Versioned persistence/migrations -> 8 dedicated node_graph naming cleanup
+```
+
+## Stabilization bridge tasks
+
+These tasks do not replace Phase A-O. They are the required bridge from the current prototype-heavy local state back to the canonical roadmap.
+
+| Bridge | Dominant mechanism | Related phase | Target maturity | Gate |
+|---:|---|---|---|---|
+| S0 | Safety baseline / repo cleanliness | A/I | L2 -> L3 | build status known, noisy local root documented, rollback path clear |
+| S1 | Selection Operation Target Contract | E/F | L2/L3 -> L4 | multi-delete and multi-drag use same target resolver |
+| S2 | InteractionSession performance path | D/E | L2 -> L3/L4 | pointermove uses transient preview; commit happens on pointerup/blur/enter |
+| S3 | Canvas Instance Guardrail | D/L | L2 -> L3 | one primary interactive canvas per `viewId`; mirrors do not dispatch commands |
+| S4 | Document / Session / View / Workspace / Cache split audit | C/D/F/L | L1/L2 -> L3 | ownership of each state field is explicit |
+| S5 | Core browser boundary audit | C | L2 -> L4 | `src/core` has no React/DOM/browser/storage ownership |
+| S6 | Default UI visibility cleanup | I | L3 -> L4 | L2 debug visible only as compact status or debug workspace |
+| S7 | Versioned persistence and migrations | H/J/M | L1 -> L3 | saved documents contain schema version and migration path |
+| S8 | `node_graph` naming cleanup | N support | L1/L2 -> L3 | new public naming uses `node_graph`; legacy kept only where isolated |
+
+## Codex task chain for current stabilization
+
+Codex prompts should reference one bridge task at a time. Do not combine S1/S2/S3 with graph, docking polish, rules, arrays or visual redesign.
+
+| Step | Codex focus | Inspect first | Avoid |
+|---:|---|---|---|
+| 1 | S0 safety baseline | `package.json`, `src/`, root sprint notes, `_diagnostics`, build logs | deleting user backups without explicit request |
+| 2 | S1 selection resolver | canvas selection, hierarchy selection, delete, drag move, active object logic | global model rename |
+| 3 | S2 interaction session | pointer handlers, drag/resize paths, validation/autosave/log calls | changing visual style |
+| 4 | S3 canvas instance guardrail | docking content resolver, canvas viewport mounting, panel content mapping | rewriting docking model |
+| 5 | S4 state ownership audit | project model, app state, local component state, persistence | broad App.tsx decomposition before contracts |
+| 6 | S5 core boundary | all `src/core` imports and browser API usage | moving UI logic into core |
+| 7 | S6 default visibility | shell panels, bottom shelf, debug/log/graph/docking visibility | hiding broken runtime bugs with CSS only |
+| 8 | S7 persistence | save/load/export, localStorage, schema version | changing object schema without migration |
+| 9 | S8 naming cleanup | legacy `stateGraph` files/imports/docs | mixing semantic `state` with graph naming |
+
+## Acceptance principle
+
+A step is not complete because the UI looks better. It is complete only when the relevant contract is testable:
+
+- selection target contract is testable by multi-select delete and drag;
+- interaction session is testable by drag performance and single commit log;
+- canvas guardrail is testable by opening multiple dock panes;
+- state ownership is testable by inspecting where each field is stored;
+- core boundary is testable by import/API scan;
+- visibility cleanup is testable by default UI and debug workspace modes;
+- persistence is testable by save/load across schema version;
+- naming cleanup is testable by grep and build.
