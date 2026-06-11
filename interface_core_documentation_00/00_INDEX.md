@@ -2,7 +2,7 @@
 
 Status: working documentation folder
 Created: 2026-06-06
-Last update: 2026-06-11 — editorial pass / condensed canonical index
+Last update: 2026-06-11 — stabilization / Codex access map
 Repository: `qubok_interface_core`
 
 ## Purpose
@@ -20,17 +20,23 @@ The project is a parametric interface engine, not a normal UI kit. The full cano
 | 02 | `02_ROADMAP_PHASE_TO_SCREEN_STATE_MAP.md` | Phase A-O implementation order vs Screen State 01-08 visual states |
 | 03 | `03_FEATURE_MATURITY_MATRIX.md` | feature maturity levels L0-L5 and promotion gates |
 | 04 | `04_CODEX_DEVELOPMENT_PROTOCOL.md` | required structure for Codex/new-chat implementation prompts |
+| 05 | `05_CURRENT_IMPLEMENTATION_STABILIZATION_MAP.md` | current local implementation diagnosis and stabilization priority |
+| 06 | `06_LOCAL_REPO_STRUCTURE_AND_CODEX_ACCESS_MAP.md` | how to read the current local repo, root clutter and Codex task context |
 
 ## Core rules
 
 | Area | Rule |
 |---|---|
-| Source of truth | `Project JSON / data model` owns persistent state. |
+| Source of truth | `Project JSON / data model` owns persistent document state. |
+| State split | Keep document data, session state, view state, workspace layout and runtime cache separated. |
 | Mutation path | Persistent changes go through command layer. |
+| Interaction path | Pointer interactions use `InteractionSession`: transient preview first, commit command later. |
+| Selection | `selected_ids`, `active_id`, `hit_id` and `operation_target_ids` have different roles. |
 | Naming | `node_graph` is canonical; `state_graph` is legacy. |
 | Shape/region split | Shape renders; region handles interaction/layout behavior. |
 | Panel concept | Panel is a structured component, not a single rectangle. |
 | Layout separation | app shell docking, canvas object layout and graph viewport layout are separate systems. |
+| Canvas instances | One primary interactive canvas per `viewId`; mirrors/previews must not dispatch full canvas commands. |
 | MVP | Default MVP stays focused and readable; advanced systems remain schema/workspace gated. |
 | Documentation | Each feature should have phase, maturity level, owner, command path, validation and tests. |
 
@@ -39,6 +45,20 @@ The project is a parametric interface engine, not a normal UI kit. The full cano
 ```text
 primitive -> bbox -> transform/style -> region/layout -> group/panel -> exposed parameters -> links/references/rules -> library asset -> reusable component -> generated helpers -> event/action/node_graph behavior -> workspace
 ```
+
+## Current stabilization priority
+
+| Priority | Focus | Why now |
+|---:|---|---|
+| 0 | Safety baseline / repo cleanliness | many local sprint notes, backups, logs and generated folders make Codex context noisy |
+| 1 | Selection Operation Target Contract | fixes multi-delete and multi-drag acting on one object |
+| 2 | InteractionSession | prevents pointermove from committing full model changes every pixel |
+| 3 | Canvas Instance Guardrail | prevents multiple docked canvas panes from multiplying full renderers |
+| 4 | Document / Session / View / Workspace / Cache split | removes conflicting persistent/session/view state |
+| 5 | Core browser boundary audit | keeps `src/core` headless and testable |
+| 6 | Default UI visibility cleanup | debug/docking/node graph must not dominate default interface creator |
+| 7 | Versioned persistence and migrations | protects future schema growth |
+| 8 | Dedicated `node_graph` naming cleanup | migrate legacy `stateGraph` only after runtime stabilization |
 
 ## Implementation roadmap
 
@@ -89,4 +109,4 @@ Screen State 01-08 are visual documentation states, not strict sprint tasks.
 
 When files conflict, follow:
 
-`00_CURRENT_SOURCE_OF_TRUTH.md` -> `01_TERMINOLOGY_CANON_NODE_GRAPH.md` -> `02_ROADMAP_PHASE_TO_SCREEN_STATE_MAP.md` -> `03_FEATURE_MATURITY_MATRIX.md` -> `04_CODEX_DEVELOPMENT_PROTOCOL.md` -> references `10-14` -> older notes/prompts.
+`00_CURRENT_SOURCE_OF_TRUTH.md` -> `01_TERMINOLOGY_CANON_NODE_GRAPH.md` -> `02_ROADMAP_PHASE_TO_SCREEN_STATE_MAP.md` -> `03_FEATURE_MATURITY_MATRIX.md` -> `04_CODEX_DEVELOPMENT_PROTOCOL.md` -> `05_CURRENT_IMPLEMENTATION_STABILIZATION_MAP.md` -> `06_LOCAL_REPO_STRUCTURE_AND_CODEX_ACCESS_MAP.md` -> references `10-14` -> older notes/prompts.
