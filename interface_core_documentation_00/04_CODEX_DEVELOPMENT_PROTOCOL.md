@@ -1,6 +1,6 @@
 # QUBOK_INTERFACE_CORE — CODEX DEVELOPMENT PROTOCOL
 
-Version: 2026-06-11B
+Version: 2026-06-11C
 Status: canonical prompt and sprint protocol
 
 ## Purpose
@@ -124,10 +124,15 @@ For implementation tasks, inspect in this order:
 1. `README.md`
 2. `interface_core_documentation_00/00_INDEX.md`
 3. `interface_core_documentation_00/00_CURRENT_SOURCE_OF_TRUTH.md`
-4. `interface_core_documentation_00/05_CURRENT_IMPLEMENTATION_STABILIZATION_MAP.md`
-5. `interface_core_documentation_00/06_LOCAL_REPO_STRUCTURE_AND_CODEX_ACCESS_MAP.md`
-6. the relevant `src/` files
-7. only then older `SPRINT_*` notes if explicitly relevant
+4. `interface_core_documentation_00/01_TERMINOLOGY_CANON_NODE_GRAPH.md`
+5. `interface_core_documentation_00/02_ROADMAP_PHASE_TO_SCREEN_STATE_MAP.md`
+6. `interface_core_documentation_00/03_FEATURE_MATURITY_MATRIX.md`
+7. `interface_core_documentation_00/04_CODEX_DEVELOPMENT_PROTOCOL.md`
+8. `interface_core_documentation_00/05_CURRENT_IMPLEMENTATION_STABILIZATION_MAP.md`
+9. `interface_core_documentation_00/06_LOCAL_REPO_STRUCTURE_AND_CODEX_ACCESS_MAP.md`
+10. the relevant `src/` files
+11. only then older `SPRINT_*` notes if explicitly relevant
+12. logs only if the task is build/runtime diagnosis
 
 ## Preferred final response after a sprint
 
