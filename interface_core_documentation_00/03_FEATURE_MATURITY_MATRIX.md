@@ -1,7 +1,7 @@
 # QUBOK_INTERFACE_CORE — FEATURE MATURITY MATRIX
 
-Version: 2026-06-11
-Status: canonical maturity gate
+Version: 2026-06-11B
+Status: canonical maturity gate + stabilization gates
 
 ## Purpose
 
@@ -24,16 +24,23 @@ Default interface creator should show L3/L4 and compact L2 status only. It shoul
 
 | Feature | Phase | Start | MVP target | Final |
 |---|---|---:|---:|---:|
-| Project model | C | L1 | L4 | L5 |
+| Document / Project model | C | L1 | L4 | L5 |
 | InterfaceObject model | C | L1 | L4 | L5 |
+| Document / Session / View split | C/D/F/L | L1 | L3 | L4 |
 | Command layer | C | L1 | L4 | L5 |
+| Transaction commands / patches | C/E/H | L1 | L3 | L4 |
 | Validation skeleton | C | L1 | L3 | L4 |
+| Versioned persistence / migrations | H/J/M | L1 | L3 | L4 |
 | Canvas renderer | D | L2 | L3 | L4 |
 | Viewport pan/zoom/grid | D | L2 | L3 | L4 |
+| Canvas Instance Guardrail | D/L | L1/L2 | L3 | L4 |
 | Primitive creation | E | L2 | L3 | L4 |
 | Selection / box select | E | L2 | L3 | L4 |
+| Selection Operation Target Contract | E/F | L1/L2 | L4 | L4 |
+| InteractionSession | D/E | L1/L2 | L3 | L4 |
 | Transform / resize | E | L2 | L3 | L4 |
 | Inspector | F | L2 | L3 | L4 |
+| Schema-driven inspector adapters | F/M | L1 | L3 | L4/L5 |
 | Hierarchy / layers | F | L2 | L3 | L4 |
 | visual_bbox | G | L1 | L3 | L4 |
 | layout_bbox | G | L1 | L3 | L4 |
@@ -69,6 +76,21 @@ Default interface creator should show L3/L4 and compact L2 status only. It shoul
 | Procedural icons | O | L0/L1 | L2 | L5 |
 | External bridges | O | L0 | hidden | L5 |
 
+## Stabilization maturity requirements
+
+Current prototype work must promote the following contracts before more advanced UI expansion:
+
+| Contract | Minimum target before next advanced work | Required proof |
+|---|---:|---|
+| Selection Operation Target Contract | L4 | multi-select delete and drag affect all selected top-level targets, not only active/hit object |
+| InteractionSession | L3/L4 | pointermove previews are transient; one final command commits on pointerup/blur/enter |
+| Canvas Instance Guardrail | L3 | duplicate docked canvas panes become mirror/snapshot/placeholder unless explicitly independent |
+| Document / Session / View split | L3 | selected/active/hover/camera/docking/cache ownership documented and not duplicated as document truth |
+| Core browser boundary | L4 | `src/core` has no React imports and no direct DOM/browser/storage ownership |
+| Default UI cleanup | L4 | default interface shows L3/L4 workflows and compact L2 status only |
+| Versioned persistence | L3 | saved documents include schema version and a migration path |
+| node_graph naming cleanup | L3 | new public naming uses `node_graph`; old `stateGraph` remains only isolated legacy |
+
 ## Promotion gates
 
 | Promotion | Gate |
@@ -84,12 +106,15 @@ Default interface creator should show L3/L4 and compact L2 status only. It shoul
 ```text
 Feature:
 Phase:
+Stabilization bridge:
 Current maturity:
 Target maturity:
 Default UI visibility:
+Data owner: DocumentModel / SessionState / ViewState / WorkspaceLayout / RuntimeCache / History
 Touched model fields:
 Touched commands:
 Touched views:
+Runtime hot path impact:
 Validation:
 Manual tests:
 Out-of-scope:
