@@ -3,18 +3,18 @@
 status: active
 version: v2.2
 doc_type: glossary
-last_updated: 2026-06-10
+last_updated: 2026-06-24
 
 ## Cel
 
-Słownik pojęć dla `qubok_interface_core`. Używać przy pisaniu promptów, tasków, feedbacku i dokumentacji, aby nie mieszać podobnych pojęć: rectangle, region, panel, group, component, docking, layout, node graph viewport.
+Słownik pojęć dla `qubok_interface_core`. Używać przy pisaniu promptów, tasków, feedbacku i dokumentacji, aby nie mieszać podobnych pojęć: rectangle, region, panel, group, component, docking, layout, node graph viewport, feature_core, design tokens i runtime rules.
 
 ## Naming v2.2
 
 - Project: `qubok_interface_core` / `interface_core`.
 - Local PC path: `I:\Art\_AI\app_development\qubok_interface_core`.
 - Graph system: `node_graph`, `nodeGraph`, `NodeGraph`, `node graph`.
-- Stare nazewnictwo `state_graph` jest superseded.
+- Stare graph naming jest superseded.
 
 ## Główne pojęcia
 
@@ -76,6 +76,33 @@ Słownik pojęć dla `qubok_interface_core`. Używać przy pisaniu promptów, ta
 | L4 POLISHED_TOOL | stabilne i gotowe defaultowo | experimental |
 | L5 ADVANCED_COMPOSABLE | asset/graph/plugin/reusable subsystem | MVP requirement |
 
+## 2026-06-24 additions — feature_core, tokens, runtime rules
+
+| Termin | Definicja | Nie mylić z |
+|---|---|---|
+| feature_core | funkcjonalna baza definicji engine: runtime, layout, events, actions, nodes, colors, debug | Project model |
+| design tokens | wizualne wartości i role: color/type/layout/parts/node_graph/runtime_feedback | command layer, runtime behavior |
+| Figma mirror | lustrzana reprezentacja wizualnych tokenów w Figma variables | repo source of truth |
+| runtime rules | reguły działania UI runtime, np. panel behavior, value math, command emission | visual tokens |
+| layout rules | reguły rozmiaru, flow, overflow, readability i collapse | canvas object transforms |
+| panel_resize_rule | reguła reakcji panelu na zmianę rozmiaru | CSS-only resize hack |
+| panel_readable_size | próg, od którego panel/sekcja pozostaje czytelna | minimalny techniczny rozmiar |
+| compact_when_default | ukrywanie pól z defaultową wartością bez kasowania danych | usuwanie parametrów |
+| collapse_when_small | zwijanie sekcji przy małym rozmiarze panelu | global hide |
+| overflow_rule | zasada obsługi nadmiaru treści: scroll, wrap, truncate, hide, popover | przypadkowy clipping |
+| event/action runtime | headless warstwa eventów, target resolvera i command-backed actions | visual node graph |
+| path_graph | późniejszy subsystem grafu/path/curve, bardziej proceduralny niż core runtime | core event/action runtime |
+| color_swatch | pojedyncza próbka koloru | pełna paleta |
+| swatch_stack | zestaw próbek służący do wyprowadzenia palety | layers stack |
+| palette_from_swatches | procedura budująca paletę z próbek | ręczna edycja komponentów |
+| palette_roles | role kolorów, np. background, panel, border, accent, warning | konkretne heksy bez znaczenia |
+| target_by_color_role | wybór elementów przez rolę koloru | wybór przez selekcję UI |
+| shift_saturation | transform nasycenia dla wybranych ról/kolorów | manualny repaint |
+| shift_luminance | transform jasności dla wybranych ról/kolorów | manualny repaint |
+| shift_hue | transform hue dla wybranych ról/kolorów | manualny repaint |
+| assign_color_by_role | przypisanie koloru do elementu przez rolę | jednorazowa wartość bez semantyki |
+| debug/inspection | trace, dry run, preview targets, validation reports | default UI |
+
 ## Rozróżnienia krytyczne
 
 ### Rectangle vs Region
@@ -127,6 +154,28 @@ Node graph viewport:
 
 Nie dzielić jednego viewport state między nimi.
 
+### feature_core vs Project model
+
+Project model:
+- zapisuje konkretny dokument/interfejs użytkownika,
+- pozostaje persistent source of truth,
+- jest mutowany przez command layer.
+
+feature_core:
+- opisuje dostępne funkcje, reguły, akcje i konfiguracje engine,
+- może zasilać runtime, UI wyboru, walidację i późniejszy node_graph,
+- nie przejmuje danych użytkownika.
+
+### design tokens vs Figma mirror
+
+Design tokens:
+- powinny mieć repo source of truth w JSON/TypeScript/schema,
+- mogą być eksportowane lub synchronizowane.
+
+Figma mirror:
+- pomaga wizualnie projektować i porównywać wartości,
+- nie jest runtime ownerem i nie steruje Project modelem.
+
 ## Zalecane nazwy w promptach
 
 Używaj:
@@ -137,6 +186,10 @@ Używaj:
 - `canvas object layout`, gdy chodzi o układ obiektów w projekcie.
 - `node graph viewport`, gdy chodzi o pan/zoom node graphu.
 - `node_graph`, `nodeGraph`, `NodeGraph`, gdy chodzi o graph system.
+- `feature_core`, gdy chodzi o funkcjonalną bazę definicji engine.
+- `design tokens`, gdy chodzi o wizualne wartości i role.
+- `Figma mirror`, gdy chodzi o odbicie tokenów w Figma variables.
+- `runtime rules`, `layout rules`, `panel_resize_rule`, gdy chodzi o zachowanie runtime.
 - `region_rectangle`, gdy region jest osobnym obiektem.
 - `region_data`, gdy region jest właściwością obiektu.
 - `command-backed action`, gdy akcja eventu wywołuje command.
@@ -147,7 +200,9 @@ Unikaj:
 - „node” bez doprecyzowania: node graph node czy UI primitive?
 - „layout” bez doprecyzowania: app shell, canvas object czy node graph viewport?
 - „component” jako React component, jeśli chodzi o reusable UI asset.
-- starego nazewnictwa `state_graph`.
+- starego graph naming.
+- traktowania `feature_core` jako Project model.
+- traktowania Figma jako runtime source of truth.
 
 ## Krótka forma dla tasków
 
@@ -156,7 +211,7 @@ Przy zadaniu używaj wzoru:
 ```text
 Feature: [nazwa]
 Type: [primitive/group/component/dock/workspace/event/node_graph]
-Data owner: [Project/InterfaceObject/DockLayout/NodeGraph]
+Data owner: [Project/InterfaceObject/DockLayout/NodeGraph/feature_core]
 Command path: [...]
 View: [...]
 Validation: [...]
