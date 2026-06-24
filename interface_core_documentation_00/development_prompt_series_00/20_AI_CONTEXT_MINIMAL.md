@@ -3,7 +3,7 @@
 status: active
 version: v2.2
 doc_type: ai_minimal_context
-last_updated: 2026-06-10
+last_updated: 2026-06-24
 
 ## Cel
 
@@ -26,7 +26,7 @@ I:\Art\_AI\app_development\qubok_interface_core
 ## Naming v2.2
 
 - Use `node_graph`, `nodeGraph`, `NodeGraph` and `node graph`.
-- Do not add new references using old `state_graph` naming.
+- Do not add new references using old graph naming.
 - Do not use temporary project names ending with `_00`.
 
 ## Stack
@@ -55,6 +55,15 @@ I:\Art\_AI\app_development\qubok_interface_core
 13. Default UI exposes only L3/L4.
 14. Debug, graph, docking and experiments do not dominate the default screen.
 15. Panel_Monitor sample must be Project data, not JSX mockup.
+
+## 2026-06-24 minimal additions
+
+- Current mental model: `design tokens -> feature_core -> runtime shell -> interaction layer -> rule engine -> node_graph -> debug/inspection`.
+- Design tokens are visual values. Repo JSON/TypeScript is the development source of truth; Figma variables are a visual mirror, not runtime ownership.
+- `feature_core` groups functional definitions into `runtime/*`, `layout/*`, `events/*`, `actions/*`, `nodes/*`, `colors/*`, `debug/*`.
+- `feature_core` does not replace Project model. Project stores the concrete document; `feature_core` defines available behavior/configuration.
+- Runtime rules come first: dock shell, split/merge/resize, panel readable rules, `compact_when_default`, value field math, command palette, event/action runtime, debug trace and lightweight color logic.
+- `node_graph` comes later as visual editing/inspection for existing runtime/event/action/rule logic. It must not become a second runtime engine.
 
 ## Aktualna kolejność implementacji
 
