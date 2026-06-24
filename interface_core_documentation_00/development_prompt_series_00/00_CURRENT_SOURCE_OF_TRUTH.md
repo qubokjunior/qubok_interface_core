@@ -2,18 +2,14 @@
 
 status: active
 version: v2.2
- doc_type: canonical_entry_point
+doc_type: canonical_entry_point
 last_updated: 2026-06-24
 
 ## Cel
 
 Ten dokument jest głównym źródłem prawdy aktualnej dokumentacji `qubok_interface_core`. Jeżeli inne dokumenty są sprzeczne, ten plik oraz dokumenty v2.2 mają wyższy priorytet niż starsze opisy sprintów.
 
-Jeżeli pracujesz z Codex i chcesz oszczędzać tokeny, zacznij od:
-
-`25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
-
-Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie czytać.
+Jeżeli pracujesz z Codex i chcesz oszczędzać tokeny, zacznij od `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`. Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie czytać.
 
 ## Nazewnictwo obowiązujące od v2.2
 
@@ -21,7 +17,7 @@ Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie 
 - Nie dodawać nowych publicznych nazw opartych na starym graph naming.
 - Jeżeli starszy dokument lub kod używa starej nazwy, traktować ją jako superseded i migrować do `node_graph`.
 - Właściwa nazwa projektu: `qubok_interface_core` albo skrócone `interface_core`, zależnie od kontekstu.
-- Nie używać tymczasowych nazw typu `interface_core_00` / `qubok_interface_core_00` dla aktualnego projektu.
+- Nie używać tymczasowych nazw projektu kończących się `_00` dla aktualnego projektu.
 
 ## Lokalna ścieżka projektu na PC
 
@@ -155,7 +151,7 @@ Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 
 - Nie zaczynać od full node graph UI.
 - Nie dodawać docking jako pierwszej dużej funkcji.
-- Nie dodawać React Flow/FlexLayout/XState/Tauri przed ich adapter boundary.
+- Nie dodawać external UI/graph/docking libraries przed ich adapter boundary.
 - Nie budować sample scene jako JSX mockup.
 - Nie mieszać app shell layout, canvas object layout i graph viewport layout.
 - Nie robić toolbaru jako długiej listy wszystkich komend.
