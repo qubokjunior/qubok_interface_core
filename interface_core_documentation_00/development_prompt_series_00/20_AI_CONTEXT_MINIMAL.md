@@ -2,7 +2,7 @@
 
 status: active
 version: v2.2
- doc_type: ai_minimal_context
+doc_type: ai_minimal_context
 last_updated: 2026-06-24
 
 ## Cel
