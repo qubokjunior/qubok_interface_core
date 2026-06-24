@@ -2,8 +2,8 @@
 
 status: active
 version: v2.2
-doc_type: canonical_entry_point
-last_updated: 2026-06-10
+ doc_type: canonical_entry_point
+last_updated: 2026-06-24
 
 ## Cel
 
@@ -18,7 +18,7 @@ Ten plik mówi, które dokumenty czytać dla danego typu zadania i których nie 
 ## Nazewnictwo obowiązujące od v2.2
 
 - Używać `node_graph`, `nodeGraph`, `NodeGraph` i „node graph”.
-- Nie używać już `state_graph`, `stateGraph`, `StateGraph` ani „state graph” w nowych dokumentach i kodzie.
+- Nie dodawać nowych publicznych nazw opartych na starym graph naming.
 - Jeżeli starszy dokument lub kod używa starej nazwy, traktować ją jako superseded i migrować do `node_graph`.
 - Właściwa nazwa projektu: `qubok_interface_core` albo skrócone `interface_core`, zależnie od kontekstu.
 - Nie używać tymczasowych nazw typu `interface_core_00` / `qubok_interface_core_00` dla aktualnego projektu.
@@ -34,6 +34,27 @@ Ta ścieżka jest lokalną ścieżką roboczą użytkownika. GitHub repo nadal p
 ## Aktualny werdykt
 
 `qubok_interface_core` pozostaje parametrycznym silnikiem UI, nie UI kitem i nie pojedynczą aplikacją. Każdy element interface powinien być obiektem danych w Project modelu. Canvas, inspector, hierarchy, export, component library, debug, events i node graph są widokami albo warstwami operacyjnymi nad tym modelem.
+
+## 2026-06-24 update — feature_core, database, tokens, node_graph and documentation merge
+
+Aktualny model architektury:
+
+```text
+design tokens
+-> feature_core
+-> runtime shell
+-> interaction layer
+-> rule engine
+-> node_graph
+-> debug/inspection
+```
+
+- Design tokens opisują wizualne wartości: colors, type, layout, parts, node_graph i runtime_feedback. Figma variables są visual mirror; runtime/development source of truth pozostaje w repo: JSON/TypeScript, schema i generowane artefakty.
+- `feature_core` jest funkcjonalną bazą definicji dla zachowania engine. Grupuje `runtime/*`, `layout/*`, `events/*`, `actions/*`, `nodes/*`, `colors/*`, `debug/*`.
+- `feature_core` nie zastępuje Project modelu. Project JSON / Project model nadal zapisuje konkretny dokument użytkownika i pozostaje persistent source of truth.
+- Runtime rules są pierwsze: dock shell, split/merge/resize paneli, panel_resize_rule, panel_readable_size, compact_when_default, collapse_when_small, overflow_rule, value field math, command palette, event/action runtime, debug trace / dry run i lekka logika theme/color.
+- `node_graph` ma później wizualnie edytować istniejącą logikę runtime/events/actions/rules. Nie jest drugim engine i nie powinien przejmować ownership event/action runtime.
+- Rekomendowana przyszła struktura repo to `src/core/database/{tokens,features,nodes,schemas,generated}` oraz `scripts/database/{generate,validate,export}`. To kierunek architektury, nie wymóg tego patcha.
 
 ## Obowiązujące zasady
 
@@ -109,6 +130,7 @@ Cel: model, commands, command history, selectors, validation, tests i render ada
 | `23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md` | active_with_v2_2_naming | mapa owner -> command -> view -> validation |
 | `24_CANONICAL_GLOSSARY.md` | active_with_v2_2_naming | słownik pojęć |
 | `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` | active | pierwsza mapa nawigacyjna dla Codex |
+| `30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md` | active | feature_core, database, tokens i runtime rules |
 
 ## Dokumenty prompt chain
 
@@ -120,13 +142,14 @@ Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 
 1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md` dla wyboru dokumentów do czytania.
 2. Ten plik dla reguł canonical.
-3. Roadmap v2.2.
-4. Architecture update v2.1/v2.2.
-5. Implementation changelog v2.2.
-6. External adapter policy.
-7. Current sprint prompt.
-8. Starsze prompt files.
-9. Archiwalne notatki / wcześniejsze visual prompts.
+3. `30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md` dla feature_core, database, tokens i runtime rules.
+4. Roadmap v2.2.
+5. Architecture update v2.1/v2.2.
+6. Implementation changelog v2.2.
+7. External adapter policy.
+8. Current sprint prompt.
+9. Starsze prompt files.
+10. Archiwalne notatki / wcześniejsze visual prompts.
 
 ## Czego obecnie nie robić
 
@@ -137,6 +160,8 @@ Jeżeli dokumenty są sprzeczne, stosuj priorytet:
 - Nie mieszać app shell layout, canvas object layout i graph viewport layout.
 - Nie robić toolbaru jako długiej listy wszystkich komend.
 - Nie pokazywać debug labels jako default screen.
+- Nie przenosić source of truth do Figma variables.
+- Nie traktować `feature_core` jako zamiennika Project modelu.
 
 ## Definicja sukcesu dokumentacji
 
