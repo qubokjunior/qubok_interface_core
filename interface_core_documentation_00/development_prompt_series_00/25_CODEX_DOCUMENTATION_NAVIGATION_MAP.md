@@ -3,7 +3,7 @@
 status: active
 version: v2.2
 doc_type: codex_navigation_map
-last_updated: 2026-06-10
+last_updated: 2026-06-24
 
 ## Cel
 
@@ -20,7 +20,7 @@ Jeżeli masz wskazać Codexowi jeden plik nawigacyjny, wskaż ten plik.
 | Local PC path | `I:\Art\_AI\app_development\qubok_interface_core` |
 | Graph system | `node_graph`, `nodeGraph`, `NodeGraph`, `node graph` |
 
-Nie używać nowych referencji do `state_graph`, `stateGraph`, `StateGraph`, „state graph”, `interface_core_00` ani `qubok_interface_core_00`.
+Nie używać nowych referencji do starego graph naming ani tymczasowych nazw projektu kończących się `_00`.
 
 ## Najkrótsza instrukcja dla Codex
 
@@ -42,8 +42,9 @@ Implement only the selected sprint/task.
 | Repository | `qubokjunior/qubok_interface_core` |
 | Local PC path | `I:\Art\_AI\app_development\qubok_interface_core` |
 | Documentation root | `interface_core_documentation_00/development_prompt_series_00/` |
-| Current documentation version | v2.2 |
+| Current documentation version | v2.2 + 2026-06-24 amendment |
 | Main source of truth | `00_CURRENT_SOURCE_OF_TRUTH.md` |
+| Feature/database reference | `30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md` |
 | Current near-term development target | `04_SPRINT_02_CORE_MODEL_COMMANDS_VALIDATION_PROMPT.md` |
 | Roadmap acceptance map | `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` |
 
@@ -51,14 +52,15 @@ Implement only the selected sprint/task.
 
 1. `25_CODEX_DOCUMENTATION_NAVIGATION_MAP.md`
 2. `00_CURRENT_SOURCE_OF_TRUTH.md`
-3. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
-4. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
-5. `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md`
-6. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
-7. task-specific policy/matrix/glossary document
-8. current sprint prompt
-9. older sprint prompts
-10. legacy notes / archive/reference material
+3. `30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md` for feature_core, database, tokens and runtime rules
+4. `01_PROMPT_PROTOCOL_AND_SCOPE_GATES.md`
+5. `16_ROADMAP_V2_1_REVISED_IMPLEMENTATION_ORDER.md`
+6. `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md`
+7. `18_IMPLEMENTATION_CHANGELOG_FOR_EXISTING_PROMPTS.md`
+8. task-specific policy/matrix/glossary document
+9. current sprint prompt
+10. older sprint prompts
+11. legacy notes / archive/reference material
 
 ## Core invariants to keep in memory
 
@@ -77,6 +79,9 @@ Implement only the selected sprint/task.
 13. Default UI exposes only L3/L4 features.
 14. Debug, graph, docking and experimental systems must not dominate the default screen.
 15. Panel_Monitor sample must be Project data, not JSX mockup.
+16. Figma variables are a visual mirror, not runtime source of truth.
+17. `feature_core` defines functional configuration; it does not replace Project model.
+18. `node_graph` edits/visualizes existing runtime/event/action/rule logic later; it is not a second engine.
 
 ## Route selector
 
@@ -84,21 +89,22 @@ Implement only the selected sprint/task.
 |---|---|---|
 | Start or continue implementation sprint | Route A | 25, 00, 01, current sprint file, 27, 28 |
 | Repair failed sprint/build | Route B | 25, 00, 01, 26, 27, current sprint file, failing log/code context only |
-| Diagnose architecture/roadmap | Route C | 25, 00, 15, 16, 18, 22, 23, 24, 29 |
+| Diagnose architecture/roadmap | Route C | 25, 00, 15, 16, 18, 22, 23, 24, 29, 30 if database/runtime-rules are involved |
 | Add or evaluate external library | Route D | 25, 00, 01, 17, 28, related sprint file |
 | Work on core/model/commands/history/selectors | Route E | 25, 00, 01, 04, 22, 23, 24, 27, 28, 29 |
 | Work on canvas/primitives/selection/transform | Route F | 25, 00, 01, 05, 22, 23, 24, 27, 28, 29 |
 | Work on inspector/hierarchy/region debug | Route G | 25, 00, 01, 06, 22, 23, 24, 27, 28, 29 |
 | Work on component proof/save/export | Route H | 25, 00, 01, 07, 22, 23, 24, 27, 28, 29 |
 | Work on default UI/component library | Route I | 25, 00, 01, 08, 22, 23, 24, 27, 28, 29 |
-| Work on layout/snap/panel builder | Route J | 25, 00, 01, 09, 22, 23, 24, 27, 28, 29 |
-| Work on docking shell | Route K | 25, 00, 01, 10, 17, 22, 23, 24, 27, 28, 29 |
-| Work on events/actions/target resolver | Route L | 25, 00, 01, 11, 18, 22, 23, 24, 27, 28, 29 |
-| Work on node graph workspace | Route M | 25, 00, 01, 12, 17, 18, 22, 23, 24, 27, 28, 29 |
-| Work on advanced/post-MVP feature | Route N | 25, 00, 01, 13, 17, 22, 23, 24, 27, 28, 29 |
+| Work on layout/snap/panel builder | Route J | 25, 00, 01, 09, 22, 23, 24, 27, 28, 29, 30 for panel rules |
+| Work on docking shell | Route K | 25, 00, 01, 10, 17, 22, 23, 24, 27, 28, 29, 30 for panel resize rules |
+| Work on events/actions/target resolver | Route L | 25, 00, 01, 11, 18, 22, 23, 24, 27, 28, 29, 30 for runtime rules |
+| Work on node graph workspace | Route M | 25, 00, 01, 12, 17, 18, 22, 23, 24, 27, 28, 29, 30 for node/runtime separation |
+| Work on advanced/post-MVP feature | Route N | 25, 00, 01, 13, 17, 22, 23, 24, 27, 28, 29, 30 if procedural/database logic is involved |
 | Update documentation itself | Route O | 25, 00, 19, 20, 21, 28, affected docs |
-| Clarify terminology/naming | Route P | 25, 00, 23, 24 |
+| Clarify terminology/naming | Route P | 25, 00, 23, 24, 30 if feature_core/tokens/runtime rules are involved |
 | Verify roadmap stage completion | Route Q | 25, 00, 16, 27, 29, current sprint file |
+| Work on database/feature_core/runtime rules | Route R | 25, 00, 20, 21, 22, 23, 24, 28, 30 |
 
 ## File index by number
 
@@ -134,23 +140,24 @@ Implement only the selected sprint/task.
 | 27 | `27_PROJECT_COMMANDS_AND_TESTS.md` | build/test command discovery and smoke tests | every implementation/repair route |
 | 28 | `28_CODEX_PATCH_POLICY.md` | safe patch rules | every implementation/repair route |
 | 29 | `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` | per-roadmap-stage success/acceptance | after each stage or before moving on |
+| 30 | `30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md` | feature_core, database, tokens, panel/runtime rules | Route R or when tokens/database/runtime rules are involved |
 
 ## Roadmap cross-reference
 
 | Roadmap stage | Main doc | Supporting docs | Do not skip gate |
 |---|---|---|---|
 | Foundation | 02 | 00, 01, 16, 19, 21, 29 | Documentation gate |
-| Shell | 03 | 00, 01, 20, 24, 27, 28, 29 | UI gate |
+| Shell | 03 | 00, 01, 20, 24, 27, 28, 29, 30 for tokens/runtime rules | UI gate |
 | Core model / commands / history | 04 | 00, 01, 16, 22, 23, 24, 27, 28, 29 | Core gate, Test gate |
 | Canvas / primitives / selection | 05 | 00, 01, 22, 23, 24, 27, 28, 29 | Render gate, View gate |
 | Inspector / hierarchy / region debug | 06 | 00, 01, 22, 23, 24, 27, 28, 29 | Sync gate, Region gate |
 | Component proof / save / export | 07 | 00, 01, 22, 23, 24, 27, 28, 29 | Component gate, Export gate |
-| Default UI / component library | 08 | 00, 01, 22, 23, 24, 27, 28, 29 | UI gate, Library gate |
-| Layout / snap / panel builder | 09 | 00, 01, 22, 23, 24, 27, 28, 29 | Layout gate, Region/performance gate |
-| Docking shell | 10 | 00, 01, 17, 22, 23, 24, 27, 28, 29 | Docking gate, External adapter gate |
-| Events / actions | 11 | 00, 01, 18, 22, 23, 24, 27, 28, 29 | Logic gate |
-| Node graph | 12 | 00, 01, 17, 18, 22, 23, 24, 27, 28, 29 | Graph gate, External adapter gate |
-| Advanced | 13 | 00, 01, 17, 22, 23, 24, 27, 28, 29 | Advanced gate |
+| Default UI / component library | 08 | 00, 01, 22, 23, 24, 27, 28, 29, 30 for compact defaults | UI gate, Library gate |
+| Layout / snap / panel builder | 09 | 00, 01, 22, 23, 24, 27, 28, 29, 30 | Layout gate, Region/performance gate |
+| Docking shell | 10 | 00, 01, 17, 22, 23, 24, 27, 28, 29, 30 | Docking gate, External adapter gate |
+| Events / actions | 11 | 00, 01, 18, 22, 23, 24, 27, 28, 29, 30 | Logic gate |
+| Node graph | 12 | 00, 01, 17, 18, 22, 23, 24, 27, 28, 29, 30 | Graph gate, External adapter gate |
+| Advanced | 13 | 00, 01, 17, 22, 23, 24, 27, 28, 29, 30 | Advanced gate |
 
 ## Navigation by question
 
@@ -169,6 +176,8 @@ Implement only the selected sprint/task.
 | “What depends on this feature?” | 25 -> 22 |
 | “Who owns this data?” | 25 -> 23 |
 | “How do I update docs safely?” | 25 -> 19 -> 21 -> 28 |
+| “How do tokens/feature_core/runtime rules relate?” | 25 -> 00 -> 30 -> 24 |
+| “Is Figma source of truth?” | 25 -> 00 -> 30 -> 21 |
 
 ## Token budget modes
 
@@ -192,6 +201,7 @@ Read:
 - 27_PROJECT_COMMANDS_AND_TESTS.md
 - 28_CODEX_PATCH_POLICY.md
 - 23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md if feature touches Project data
+- 30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md if feature touches tokens/database/feature_core/runtime rules
 ```
 
 ### Architecture mode
@@ -206,6 +216,7 @@ Read:
 - 23_DATA_OWNER_COMMAND_VIEW_VALIDATION_MAP.md
 - 24_CANONICAL_GLOSSARY.md
 - 29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md
+- 30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md when database/runtime rules are involved
 ```
 
 ### Repair mode
@@ -261,5 +272,6 @@ When adding, editing, or superseding docs:
 3. Update `19_DOC_STATUS_AND_ARCHIVE_INDEX.md` if a file status changes.
 4. Update `20_AI_CONTEXT_MINIMAL.md` if the minimal context changes.
 5. Update `29_ROADMAP_SUCCESS_ACCEPTANCE_MAP.md` if roadmap acceptance changes.
-6. Use `21_DOCUMENTATION_HEALTH_CHECKLIST.md` before committing documentation changes.
-7. Use `28_CODEX_PATCH_POLICY.md` to keep docs changes focused.
+6. Update `30_FEATURE_CORE_DATABASE_AND_RUNTIME_RULES.md` if tokens/database/feature_core/runtime rules change.
+7. Use `21_DOCUMENTATION_HEALTH_CHECKLIST.md` before committing documentation changes.
+8. Use `28_CODEX_PATCH_POLICY.md` to keep docs changes focused.
